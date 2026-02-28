@@ -710,9 +710,10 @@ select.input {
 /* ── Hero-specific ──────────────────────────────────── */
 .hero-bg {
   position: absolute;
-  inset: 0;
+  inset: 20px;
   z-index: 0;
   overflow: hidden;
+  border-radius: var(--radius-2xl);
 }
 
 .hero-overlay {
