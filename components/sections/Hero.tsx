@@ -42,7 +42,7 @@ export default function Hero() {
       {/* Background image */}
       <div className="hero-bg">
         <Image
-          src="/hero-bg.jpg"
+          src="/hero-bg.png"
           alt=""
           fill
           priority
