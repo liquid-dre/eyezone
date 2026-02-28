@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { ArrowDown, CalendarCheck, ChevronRight, Sparkles, Activity, Clock } from "lucide-react";
 import FloatingOrbs from "@/components/visuals/FloatingOrbs";
 import LensArcs from "@/components/visuals/LensArcs";
@@ -38,9 +39,16 @@ export default function Hero() {
       className="relative flex min-h-screen items-center justify-center overflow-hidden"
       aria-label="Hero"
     >
-      {/* Background */}
+      {/* Background image */}
       <div className="hero-bg">
-        <div className="hero-radial" />
+        <Image
+          src="/hero-bg.jpg"
+          alt=""
+          fill
+          priority
+          className="object-cover"
+        />
+        <div className="hero-overlay" />
         <FloatingOrbs />
         <motion.div
           style={{ x: mouse.x * 2, y: mouse.y * 2 }}
@@ -48,7 +56,6 @@ export default function Hero() {
         >
           <LensArcs className="w-[700px] h-[700px] opacity-60" />
         </motion.div>
-        <div className="grid-faint" />
       </div>
 
       {/* Content */}
@@ -60,7 +67,7 @@ export default function Hero() {
         animate="show"
       >
         <motion.div variants={fadeUp}>
-          <span className="badge mb-6 inline-flex">
+          <span className="badge badge-white mb-6 inline-flex">
             <Sparkles size={12} />
             Harare&apos;s Premier Eye Clinic
           </span>
@@ -74,13 +81,13 @@ export default function Hero() {
             fontWeight: 600,
             lineHeight: "var(--leading-tight)",
             letterSpacing: "-0.03em",
-            color: "var(--fg)",
+            color: "#ffffff",
           }}
         >
           Your Vision Deserves{" "}
           <span
             style={{
-              background: "linear-gradient(135deg, var(--blue-600), var(--blue-400))",
+              background: "linear-gradient(135deg, var(--blue-300), var(--blue-100))",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
@@ -93,7 +100,7 @@ export default function Hero() {
         <motion.p
           variants={fadeUp}
           className="section-subtitle mx-auto mb-10"
-          style={{ maxWidth: 560 }}
+          style={{ maxWidth: 560, color: "rgba(255, 255, 255, 0.85)" }}
         >
           Comprehensive ophthalmology services in a modern, comfortable setting.
           From routine exams to specialist consultations — see the world more clearly.
@@ -124,8 +131,8 @@ export default function Hero() {
         {/* Trust strip */}
         <motion.div variants={fadeUp} className="trust-strip">
           {trustItems.map((item) => (
-            <div key={item.text} className="trust-item">
-              <span className="trust-item-icon">
+            <div key={item.text} className="trust-item" style={{ color: "rgba(255,255,255,0.8)" }}>
+              <span className="trust-item-icon" style={{ background: "rgba(255,255,255,0.1)", color: "var(--blue-300)" }}>
                 <item.icon size={14} />
               </span>
               {item.text}
@@ -140,10 +147,10 @@ export default function Hero() {
           animate={{ opacity: 1 }}
           transition={{ delay: 2, duration: 1 }}
         >
-          <div className="scroll-indicator-mouse">
-            <div className="scroll-indicator-dot" />
+          <div className="scroll-indicator-mouse" style={{ borderColor: "rgba(255,255,255,0.35)" }}>
+            <div className="scroll-indicator-dot" style={{ background: "rgba(255,255,255,0.7)" }} />
           </div>
-          <span className="scroll-indicator-text">Scroll</span>
+          <span className="scroll-indicator-text" style={{ color: "rgba(255,255,255,0.5)" }}>Scroll</span>
         </motion.div>
       </motion.div>
     </section>
