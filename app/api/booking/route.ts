@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { resend, EMAIL_FROM, EMAIL_TO } from "@/lib/resend";
+import { getResend, EMAIL_FROM, EMAIL_TO } from "@/lib/resend";
 import {
   bookingConfirmationHtml,
   type BookingEmailProps,
@@ -28,7 +28,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const { error } = await resend.emails.send({
+    const { error } = await getResend().emails.send({
       from: EMAIL_FROM,
       to: EMAIL_TO,
       subject: `New Booking: ${service} — ${name}`,
