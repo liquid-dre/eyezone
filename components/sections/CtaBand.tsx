@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { CalendarCheck, MessageCircle } from "lucide-react";
-import { openBookingModal } from "@/lib/hooks";
 import RoundedSlideButton from "@/components/ui/RoundedSlideButton";
 
 export default function CtaBand() {
@@ -47,7 +46,7 @@ export default function CtaBand() {
           transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] as const }}
         >
           <RoundedSlideButton
-            onClick={openBookingModal}
+            href="#contact"
             icon={<CalendarCheck size={18} />}
             defaultBg="#ffffff"
             defaultText="var(--blue-600)"
