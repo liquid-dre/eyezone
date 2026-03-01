@@ -37,7 +37,7 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative flex min-h-screen items-center justify-center overflow-hidden"
+      className="relative flex min-h-screen items-end justify-center overflow-hidden pb-24"
       aria-label="Hero"
     >
       {/* Background image */}
@@ -61,7 +61,7 @@ export default function Hero() {
 
       {/* Content */}
       <motion.div
-        className="relative z-10 flex flex-col items-center px-6 text-center"
+        className="relative z-10 flex flex-col items-start px-6 text-left"
         style={{ maxWidth: "var(--container)" }}
         variants={container}
         initial="hidden"
@@ -98,7 +98,7 @@ export default function Hero() {
 
         <motion.p
           variants={fadeUp}
-          className="section-subtitle mx-auto mb-10"
+          className="section-subtitle mb-10"
           style={{ maxWidth: 560, color: "rgba(255, 255, 255, 0.85)" }}
         >
           Comprehensive ophthalmology services in a modern, comfortable setting.
@@ -107,7 +107,7 @@ export default function Hero() {
 
         <motion.div
           variants={fadeUp}
-          className="flex flex-wrap items-center justify-center gap-4 mb-12"
+          className="flex flex-wrap items-center justify-start gap-4 mb-12 w-full"
         >
           <button
             onClick={openBookingModal}
