@@ -616,6 +616,15 @@ select.input {
   padding-right: 2.5rem;
 }
 
+/* ── Spring Modal (dark‑bg form overrides) ─────────── */
+.spring-modal .input-label {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.spring-modal .input-error-text {
+  color: #fca5a5;
+}
+
 /* ── Modal ──────────────────────────────────────────── */
 .modal-overlay {
   position: fixed;
@@ -630,16 +639,12 @@ select.input {
 }
 
 .modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  z-index: 201;
-  transform: translate(-50%, -50%);
+  position: relative;
   background: var(--bg);
   border-radius: var(--radius-2xl);
   box-shadow: var(--shadow-xl);
   max-width: 520px;
-  width: calc(100% - 2 * var(--space-md));
+  width: 100%;
   max-height: 90vh;
   overflow-y: auto;
   padding: var(--space-2xl);
@@ -673,55 +678,6 @@ select.input {
 .modal-close:hover {
   background: var(--neutral-200);
   color: var(--fg);
-}
-
-/* Radix dialog animations */
-.modal-overlay[data-state="open"] {
-  animation: fadeIn 200ms ease-out;
-}
-
-.modal-overlay[data-state="closed"] {
-  animation: fadeOut 150ms ease-in;
-}
-
-.modal[data-state="open"] {
-  animation: dialogIn 300ms var(--ease-out);
-}
-
-.modal[data-state="closed"] {
-  animation: dialogOut 150ms ease-in;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes fadeOut {
-  from { opacity: 1; }
-  to { opacity: 0; }
-}
-
-@keyframes dialogIn {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-}
-
-@keyframes dialogOut {
-  from {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.95);
-  }
 }
 
 /* ── Toast ──────────────────────────────────────────── */
