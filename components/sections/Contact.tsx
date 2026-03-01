@@ -12,8 +12,8 @@ import {
   Instagram,
   Twitter,
 } from "lucide-react";
+import { toast } from "sonner";
 import RoundedSlideButton from "@/components/ui/RoundedSlideButton";
-import Toast from "@/components/ui/Toast";
 import FlipDateTimePicker from "@/components/ui/FlipDateTimePicker";
 
 interface FormData {
@@ -35,7 +35,7 @@ const initialForm: FormData = {
 export default function Contact() {
   const [form, setForm] = useState<FormData>(initialForm);
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
-  const [showToast, setShowToast] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const validate = () => {
     const e: typeof errors = {};
@@ -48,53 +48,31 @@ export default function Contact() {
     return Object.keys(e).length === 0;
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!validate()) return;
-    setForm(initialForm);
-    setErrors({});
-    setShowToast(true);
+    if (!validate() || submitting) return;
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.error ?? "Failed to send");
+      }
+      setForm(initialForm);
+      setErrors({});
+      toast.success("Message sent! We'll be in touch soon.");
+    } catch (err) {
+      toast.error(
+        err instanceof Error ? err.message : "Something went wrong — please try again.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
   };
-
-  const Field = ({
-    label,
-    name,
-    type = "text",
-    placeholder,
-    textarea,
-  }: {
-    label: string;
-    name: keyof FormData;
-    type?: string;
-    placeholder: string;
-    textarea?: boolean;
-  }) => (
-    <div>
-      <label className="input-label" htmlFor={`contact-${name}`}>
-        {label}
-      </label>
-      {textarea ? (
-        <textarea
-          id={`contact-${name}`}
-          className={`input ${errors[name] ? "input-error" : ""}`}
-          placeholder={placeholder}
-          value={form[name]}
-          onChange={(e) => setForm({ ...form, [name]: e.target.value })}
-          rows={4}
-        />
-      ) : (
-        <input
-          id={`contact-${name}`}
-          type={type}
-          className={`input ${errors[name] ? "input-error" : ""}`}
-          placeholder={placeholder}
-          value={form[name]}
-          onChange={(e) => setForm({ ...form, [name]: e.target.value })}
-        />
-      )}
-      {errors[name] && <p className="input-error-text">{errors[name]}</p>}
-    </div>
-  );
 
   return (
     <>
@@ -127,17 +105,38 @@ export default function Contact() {
               noValidate
             >
               <div className="flex flex-col gap-5">
-                <Field
-                  label="Name"
-                  name="name"
-                  placeholder="Your full name"
-                />
-                <Field
-                  label="Email"
-                  name="email"
-                  type="email"
-                  placeholder="you@example.com"
-                />
+                {/* Name */}
+                <div>
+                  <label className="input-label" htmlFor="contact-name">
+                    Name <span style={{ color: "#ef4444" }}>*</span>
+                  </label>
+                  <input
+                    id="contact-name"
+                    type="text"
+                    className={`input ${errors.name ? "input-error" : ""}`}
+                    placeholder="Your full name"
+                    value={form.name}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  />
+                  {errors.name && <p className="input-error-text">{errors.name}</p>}
+                </div>
+
+                {/* Email */}
+                <div>
+                  <label className="input-label" htmlFor="contact-email">
+                    Email <span style={{ color: "#ef4444" }}>*</span>
+                  </label>
+                  <input
+                    id="contact-email"
+                    type="email"
+                    className={`input ${errors.email ? "input-error" : ""}`}
+                    placeholder="you@example.com"
+                    value={form.email}
+                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  />
+                  {errors.email && <p className="input-error-text">{errors.email}</p>}
+                </div>
+
                 <div>
                   <label className="input-label">Preferred Date &amp; Time</label>
                   <FlipDateTimePicker
@@ -153,17 +152,28 @@ export default function Contact() {
                     variant="light"
                   />
                 </div>
-                <Field
-                  label="Message"
-                  name="message"
-                  placeholder="Tell us how we can help…"
-                  textarea
-                />
+
+                {/* Message */}
+                <div>
+                  <label className="input-label" htmlFor="contact-message">
+                    Message <span style={{ color: "#ef4444" }}>*</span>
+                  </label>
+                  <textarea
+                    id="contact-message"
+                    className={`input ${errors.message ? "input-error" : ""}`}
+                    placeholder="Tell us how we can help…"
+                    value={form.message}
+                    onChange={(e) => setForm({ ...form, message: e.target.value })}
+                    rows={4}
+                  />
+                  {errors.message && <p className="input-error-text">{errors.message}</p>}
+                </div>
                 <RoundedSlideButton
                   icon={<Send size={16} />}
                   className="w-full mt-2"
+                  disabled={submitting}
                 >
-                  Send Message
+                  {submitting ? "Sending…" : "Send Message"}
                 </RoundedSlideButton>
               </div>
             </motion.form>
@@ -304,12 +314,6 @@ export default function Contact() {
           </div>
         </div>
       </section>
-
-      <Toast
-        message="Message sent! We'll be in touch soon."
-        visible={showToast}
-        onClose={() => setShowToast(false)}
-      />
     </>
   );
 }

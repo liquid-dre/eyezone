@@ -3,10 +3,10 @@
 import { useState, type FormEvent } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { CalendarCheck, X } from "lucide-react";
+import { toast } from "sonner";
 import { useBookingModalState, closeBookingModal } from "@/lib/hooks";
 import { services } from "@/lib/data";
 import RoundedSlideButton from "@/components/ui/RoundedSlideButton";
-import Toast from "@/components/ui/Toast";
 import FlipDateTimePicker from "@/components/ui/FlipDateTimePicker";
 
 interface BookingForm {
@@ -31,7 +31,7 @@ export default function BookingModal() {
   const isOpen = useBookingModalState();
   const [form, setForm] = useState<BookingForm>(initial);
   const [errors, setErrors] = useState<Partial<Record<keyof BookingForm, string>>>({});
-  const [showToast, setShowToast] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const validate = () => {
     const e: typeof errors = {};
@@ -46,41 +46,32 @@ export default function BookingModal() {
     return Object.keys(e).length === 0;
   };
 
-  const handleSubmit = (ev: FormEvent) => {
+  const handleSubmit = async (ev: FormEvent) => {
     ev.preventDefault();
-    if (!validate()) return;
-    setForm(initial);
-    setErrors({});
-    closeBookingModal();
-    setShowToast(true);
+    if (!validate() || submitting) return;
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/booking", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.error ?? "Failed to send");
+      }
+      setForm(initial);
+      setErrors({});
+      closeBookingModal();
+      toast.success("Appointment request sent! We'll confirm shortly.");
+    } catch (err) {
+      toast.error(
+        err instanceof Error ? err.message : "Something went wrong — please try again.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
   };
-
-  const Field = ({
-    label,
-    name,
-    type = "text",
-    placeholder,
-  }: {
-    label: string;
-    name: keyof BookingForm;
-    type?: string;
-    placeholder: string;
-  }) => (
-    <div>
-      <label className="input-label" htmlFor={`booking-${name}`}>
-        {label}
-      </label>
-      <input
-        id={`booking-${name}`}
-        type={type}
-        className={`input ${errors[name] ? "input-error" : ""}`}
-        placeholder={placeholder}
-        value={form[name]}
-        onChange={(e) => setForm({ ...form, [name]: e.target.value })}
-      />
-      {errors[name] && <p className="input-error-text">{errors[name]}</p>}
-    </div>
-  );
 
   return (
     <>
@@ -150,17 +141,37 @@ export default function BookingModal() {
                 {/* Form */}
                 <form onSubmit={handleSubmit} noValidate>
                   <div className="flex flex-col gap-3">
-                    <Field
-                      label="Full Name"
-                      name="name"
-                      placeholder="Your full name"
-                    />
-                    <Field
-                      label="Phone Number"
-                      name="phone"
-                      type="tel"
-                      placeholder="+263 77 000 0000"
-                    />
+                    {/* Full Name */}
+                    <div>
+                      <label className="input-label" htmlFor="booking-name">
+                        Full Name <span style={{ color: "#ef4444" }}>*</span>
+                      </label>
+                      <input
+                        id="booking-name"
+                        type="text"
+                        className={`input ${errors.name ? "input-error" : ""}`}
+                        placeholder="Your full name"
+                        value={form.name}
+                        onChange={(e) => setForm({ ...form, name: e.target.value })}
+                      />
+                      {errors.name && <p className="input-error-text">{errors.name}</p>}
+                    </div>
+
+                    {/* Phone Number */}
+                    <div>
+                      <label className="input-label" htmlFor="booking-phone">
+                        Phone Number <span style={{ color: "#ef4444" }}>*</span>
+                      </label>
+                      <input
+                        id="booking-phone"
+                        type="tel"
+                        className={`input ${errors.phone ? "input-error" : ""}`}
+                        placeholder="+263 77 000 0000"
+                        value={form.phone}
+                        onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                      />
+                      {errors.phone && <p className="input-error-text">{errors.phone}</p>}
+                    </div>
 
                     {/* Service select */}
                     <div>
@@ -168,7 +179,7 @@ export default function BookingModal() {
                         className="input-label"
                         htmlFor="booking-service"
                       >
-                        Service
+                        Service <span style={{ color: "#ef4444" }}>*</span>
                       </label>
                       <select
                         id="booking-service"
@@ -204,7 +215,7 @@ export default function BookingModal() {
 
                     <div>
                       <label className="input-label" htmlFor="booking-notes">
-                        Notes (optional)
+                        Notes
                       </label>
                       <textarea
                         id="booking-notes"
@@ -235,8 +246,9 @@ export default function BookingModal() {
                         hoverBg="var(--blue-600)"
                         hoverText="#ffffff"
                         borderColor="#ffffff"
+                        disabled={submitting}
                       >
-                        Confirm
+                        {submitting ? "Sending…" : "Confirm"}
                       </RoundedSlideButton>
                     </div>
                   </div>
@@ -246,12 +258,6 @@ export default function BookingModal() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      <Toast
-        message="Appointment request sent! We'll confirm shortly."
-        visible={showToast}
-        onClose={() => setShowToast(false)}
-      />
     </>
   );
 }

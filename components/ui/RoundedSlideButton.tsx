@@ -16,6 +16,7 @@ interface RoundedSlideButtonProps {
   className?: string;
   target?: string;
   rel?: string;
+  disabled?: boolean;
 }
 
 export default function RoundedSlideButton({
@@ -31,6 +32,7 @@ export default function RoundedSlideButton({
   className = "",
   target,
   rel,
+  disabled,
 }: RoundedSlideButtonProps) {
   const style = {
     "--btn-bg": defaultBg,
@@ -56,7 +58,7 @@ export default function RoundedSlideButton({
   }
 
   return (
-    <button onClick={onClick} className={`btn-slide ${className}`} style={style}>
+    <button onClick={onClick} className={`btn-slide ${className}`} style={style} disabled={disabled}>
       {content}
     </button>
   );
