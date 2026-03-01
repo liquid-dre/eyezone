@@ -448,7 +448,7 @@ body {
   border-radius: var(--radius-full);
   cursor: pointer;
   overflow: hidden;
-  transition: color 1000ms var(--ease-out), transform 1000ms var(--ease-out);
+  transition: color 2000ms var(--ease-out), transform 2000ms var(--ease-out);
   white-space: nowrap;
   text-decoration: none;
   line-height: 1;
