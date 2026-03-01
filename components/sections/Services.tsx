@@ -1,86 +1,137 @@
-"use client";
-
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
 import { services } from "@/lib/data";
+import type { Service } from "@/lib/data";
+import { ArrowUpRight, Eye } from "lucide-react";
 
-const containerVariants = {
-  hidden: {},
-  show: {
-    transition: { staggerChildren: 0.08 },
-  },
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 30 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const },
-  },
-};
+const serviceImages = [
+  "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2264&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1574169208507-84376144848b?q=80&w=2379&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1563089145-599997674d42?q=80&w=2370&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?q=80&w=2487&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1604076913837-52ab5629fba9?q=80&w=2487&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=2370&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1557672172-298e090bd0f1?q=80&w=2487&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1506259091721-347e791bab0f?q=80&w=2370&auto=format&fit=crop",
+];
 
 export default function Services() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-
   return (
-    <section id="services" className="section bg-subtle" aria-label="Services">
-      <div className="dots-pattern" />
-      <div className="section-container relative z-10">
-        <motion.div
-          className="mb-16 text-center"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] as const }}
-        >
-          <span className="section-label">What We Offer</span>
-          <h2 className="section-title mb-4">Our Services</h2>
-          <p className="section-subtitle mx-auto">
-            Expert eye care across a wide range of specialities, all under one roof.
-          </p>
-        </motion.div>
-
-        <motion.div
-          ref={ref}
-          className="grid gap-6"
-          style={{
-            gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-          }}
-          variants={containerVariants}
-          initial="hidden"
-          animate={inView ? "show" : "hidden"}
-        >
-          {services.map((service) => (
-            <motion.div
-              key={service.title}
-              className="card card-hover"
-              variants={cardVariants}
-              onMouseMove={(e) => {
-                const rect = e.currentTarget.getBoundingClientRect();
-                e.currentTarget.style.setProperty(
-                  "--mouse-x",
-                  `${e.clientX - rect.left}px`
-                );
-                e.currentTarget.style.setProperty(
-                  "--mouse-y",
-                  `${e.clientY - rect.top}px`
-                );
-              }}
-            >
-              <div className="card-glow" />
-              <div className="relative z-10">
-                <div className="card-icon mb-4">
-                  <service.icon size={22} />
-                </div>
-                <h3 className="card-title mb-2">{service.title}</h3>
-                <p className="card-desc">{service.description}</p>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+    <section
+      id="services"
+      aria-label="Services"
+      className="bg-neutral-900 p-4 text-neutral-50 md:p-12"
+    >
+      <div className="mx-auto grid max-w-5xl grid-cols-1 divide-y divide-neutral-700 border border-neutral-700 md:grid-cols-3 md:divide-x md:divide-y-0">
+        <TitleCard />
+        {services.slice(0, 2).map((service, i) => (
+          <ServiceCard
+            key={service.title}
+            service={service}
+            src={serviceImages[i]}
+          />
+        ))}
+      </div>
+      <div className="mx-auto grid max-w-5xl grid-cols-1 divide-y divide-neutral-700 border-x border-b border-neutral-700 md:grid-cols-3 md:divide-x md:divide-y-0">
+        {services.slice(2, 5).map((service, i) => (
+          <ServiceCard
+            key={service.title}
+            service={service}
+            src={serviceImages[i + 2]}
+          />
+        ))}
+      </div>
+      <div className="mx-auto grid max-w-5xl grid-cols-1 divide-y divide-neutral-700 border-x border-b border-neutral-700 md:grid-cols-3 md:divide-x md:divide-y-0">
+        {services.slice(5, 8).map((service, i) => (
+          <ServiceCard
+            key={service.title}
+            service={service}
+            src={serviceImages[i + 5]}
+          />
+        ))}
       </div>
     </section>
   );
 }
+
+const ServiceCard = ({
+  service,
+  src,
+}: {
+  service: Service;
+  src: string;
+}) => {
+  const Icon = service.icon;
+  return (
+    <a
+      href="#contact"
+      className="group relative flex h-56 flex-col justify-end overflow-hidden p-6 transition-colors hover:bg-neutral-950 md:h-80 md:p-9"
+    >
+      <div className="absolute left-3 top-5 z-10 text-neutral-400 transition-colors duration-500 group-hover:text-neutral-50">
+        <Icon size={18} />
+      </div>
+
+      <div className="relative z-10 transition-transform duration-500 group-hover:-translate-y-3">
+        <h3 className="text-xl font-medium leading-tight md:text-2xl">
+          {service.title}
+        </h3>
+        <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-neutral-500 transition-colors duration-500 group-hover:text-neutral-300">
+          {service.description}
+        </p>
+      </div>
+
+      <Eye
+        size={24}
+        className="absolute right-3 top-4 z-10 text-neutral-400 transition-colors group-hover:text-neutral-50"
+      />
+
+      <div
+        className="absolute bottom-0 left-0 right-0 top-0 opacity-0 blur-sm grayscale transition-all group-hover:opacity-10 group-active:scale-105 group-active:opacity-30 group-active:blur-0 group-active:grayscale-0"
+        style={{
+          backgroundImage: `url(${src})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      />
+
+      <Corners />
+    </a>
+  );
+};
+
+const Corners = () => (
+  <>
+    <span className="absolute left-[1px] top-[1px] z-10 h-3 w-[1px] origin-top scale-0 bg-blue-400 transition-all duration-500 group-hover:scale-100" />
+    <span className="absolute left-[1px] top-[1px] z-10 h-[1px] w-3 origin-left scale-0 bg-blue-400 transition-all duration-500 group-hover:scale-100" />
+    <span className="absolute bottom-[1px] right-[1px] z-10 h-3 w-[1px] origin-bottom scale-0 bg-blue-400 transition-all duration-500 group-hover:scale-100" />
+    <span className="absolute bottom-[1px] right-[1px] z-10 h-[1px] w-3 origin-right scale-0 bg-blue-400 transition-all duration-500 group-hover:scale-100" />
+    <span className="absolute bottom-[1px] left-[1px] z-10 h-3 w-[1px] origin-bottom scale-0 bg-blue-400 transition-all duration-500 group-hover:scale-100" />
+    <span className="absolute bottom-[1px] left-[1px] z-10 h-[1px] w-3 origin-left scale-0 bg-blue-400 transition-all duration-500 group-hover:scale-100" />
+    <span className="absolute right-[1px] top-[1px] z-10 h-3 w-[1px] origin-top scale-0 bg-blue-400 transition-all duration-500 group-hover:scale-100" />
+    <span className="absolute right-[1px] top-[1px] z-10 h-[1px] w-3 origin-right scale-0 bg-blue-400 transition-all duration-500 group-hover:scale-100" />
+  </>
+);
+
+const TitleCard = () => {
+  return (
+    <a
+      href="#contact"
+      className="group relative flex h-56 flex-col justify-between bg-neutral-950 p-6 md:h-80 md:p-9"
+    >
+      <h2 className="text-4xl uppercase leading-tight">
+        <span className="text-neutral-400 transition-colors duration-500 group-hover:text-blue-400">
+          What We
+        </span>
+        <br />
+        Offer
+      </h2>
+      <div className="flex items-center gap-1.5 text-xs uppercase text-neutral-400 transition-colors duration-500 group-hover:text-neutral-50">
+        <Eye size={16} />
+        <span>Expert Eye Care in Harare</span>
+      </div>
+
+      <ArrowUpRight
+        size={24}
+        className="absolute right-3 top-4 text-neutral-400 transition-colors duration-500 group-hover:text-blue-400"
+      />
+    </a>
+  );
+};
