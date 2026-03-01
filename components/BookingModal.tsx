@@ -82,7 +82,7 @@ export default function BookingModal() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => closeBookingModal()}
-            className="fixed inset-0 z-50 grid place-items-center overflow-y-scroll cursor-pointer p-4"
+            className="fixed inset-0 z-50 grid place-items-center overflow-y-scroll cursor-pointer p-2 sm:p-4"
             style={{
               background: "rgba(15, 23, 42, 0.4)",
               backdropFilter: "blur(6px)",
@@ -106,7 +106,7 @@ export default function BookingModal() {
                 style={{ color: "rgba(255,255,255,0.07)" }}
               />
 
-              <div className="spring-modal relative z-10 p-8">
+              <div className="spring-modal relative z-10 p-5 sm:p-8">
                 {/* Close button */}
                 <button
                   onClick={() => closeBookingModal()}

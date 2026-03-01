@@ -157,10 +157,11 @@ export default function Navbar() {
             exit="closed"
             className="absolute left-0 right-0 top-full origin-top flex flex-col gap-4"
             style={{
-              padding: "var(--space-lg) var(--space-xl)",
-              background: "rgba(255, 255, 255, 0.95)",
+              padding: "var(--space-lg) var(--space-md)",
+              background: "rgba(255, 255, 255, 0.97)",
               backdropFilter: "blur(20px)",
               boxShadow: "var(--shadow-lg)",
+              borderBottom: "1px solid var(--border-light)",
             }}
           >
             {navItems.map((item) => (

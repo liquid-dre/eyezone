@@ -14,7 +14,7 @@ export default function Team() {
     <section id="team" className="section bg-subtle" aria-label="Our team">
       <div className="section-container">
         <motion.div
-          className="mb-16 text-center"
+          className="mb-8 sm:mb-12 md:mb-16 text-center"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -27,7 +27,7 @@ export default function Team() {
           </p>
         </motion.div>
 
-        <div className="grid gap-12 lg:grid-cols-2 items-start">
+        <div className="grid gap-8 lg:gap-12 lg:grid-cols-2 items-start">
           {/* Doctor profile */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}

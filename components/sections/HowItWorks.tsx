@@ -25,7 +25,7 @@ export default function HowItWorks() {
     >
       <div className="section-container" style={{ maxWidth: 700 }}>
         <motion.div
-          className="mb-16 text-center"
+          className="mb-8 sm:mb-12 md:mb-16 text-center"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

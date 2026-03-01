@@ -6,8 +6,8 @@ export default function Footer() {
   return (
     <footer className="footer" role="contentinfo">
       <div
-        className="section-container flex flex-col md:flex-row items-center justify-between gap-4"
-        style={{ padding: "var(--space-xl)" }}
+        className="section-container flex flex-col md:flex-row items-center justify-between gap-3 sm:gap-4 text-center md:text-left"
+        style={{ padding: "var(--space-lg) var(--space-md)" }}
       >
         <div className="flex items-center gap-2">
           <div

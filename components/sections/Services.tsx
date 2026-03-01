@@ -18,7 +18,7 @@ export default function Services() {
     <section
       id="services"
       aria-label="Services"
-      className="p-4 md:p-12"
+      className="px-3 py-4 sm:p-4 md:p-12"
     >
       <div className="mx-auto grid max-w-5xl grid-cols-1 divide-y divide-neutral-200 border border-neutral-200 md:grid-cols-3 md:divide-x md:divide-y-0">
         <TitleCard />
