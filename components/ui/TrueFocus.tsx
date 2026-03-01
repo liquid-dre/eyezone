@@ -82,7 +82,7 @@ const TrueFocus: React.FC<TrueFocusProps> = ({
     <div
       className="relative flex gap-4 justify-center items-center flex-wrap"
       ref={containerRef}
-      style={{ outline: 'none', userSelect: 'none' }}
+      style={{ outline: 'none', userSelect: 'none', color: 'inherit', fontSize: 'inherit', fontWeight: 'inherit' }}
     >
       {words.map((word, index) => {
         const isActive = index === currentIndex;
@@ -92,7 +92,7 @@ const TrueFocus: React.FC<TrueFocusProps> = ({
             ref={el => {
               wordRefs.current[index] = el;
             }}
-            className="relative text-[3rem] font-black cursor-pointer"
+            className="relative cursor-pointer"
             style={
               {
                 filter: isActive
