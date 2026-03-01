@@ -13,4 +13,4 @@ export const EMAIL_FROM = "The Eye Zone <onboarding@resend.dev>";
  * Where booking / contact notifications are delivered.
  * Change this to the clinic's real inbox once ready.
  */
-export const EMAIL_TO = "info@theeyezone.co.zw";
+export const EMAIL_TO = "avdingiswayo54@gmail.com";
