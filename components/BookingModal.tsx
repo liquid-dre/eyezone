@@ -88,103 +88,105 @@ export default function BookingModal() {
 
   return (
     <>
-      <Dialog
-        open={isOpen}
-        onOpenChange={(open) => {
-          if (!open) closeBookingModal();
-        }}
-      >
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Book an Appointment</DialogTitle>
-            <DialogDescription>
-              Fill in the details below and we&apos;ll confirm your booking.
-            </DialogDescription>
-          </DialogHeader>
+      {isOpen && (
+        <Dialog
+          open
+          onOpenChange={(open) => {
+            if (!open) closeBookingModal();
+          }}
+        >
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Book an Appointment</DialogTitle>
+              <DialogDescription>
+                Fill in the details below and we&apos;ll confirm your booking.
+              </DialogDescription>
+            </DialogHeader>
 
-          <form onSubmit={handleSubmit} noValidate>
-            <div className="flex flex-col gap-4">
-              <Field
-                label="Full Name"
-                name="name"
-                placeholder="Your full name"
-              />
-              <Field
-                label="Phone Number"
-                name="phone"
-                type="tel"
-                placeholder="+263 77 000 0000"
-              />
-
-              {/* Service select */}
-              <div>
-                <label
-                  className="input-label"
-                  htmlFor="booking-service"
-                >
-                  Service
-                </label>
-                <select
-                  id="booking-service"
-                  className={`input ${errors.service ? "input-error" : ""}`}
-                  value={form.service}
-                  onChange={(e) =>
-                    setForm({ ...form, service: e.target.value })
-                  }
-                >
-                  <option value="">Select a service…</option>
-                  {services.map((s) => (
-                    <option key={s.title} value={s.title}>
-                      {s.title}
-                    </option>
-                  ))}
-                </select>
-                {errors.service && (
-                  <p className="input-error-text">{errors.service}</p>
-                )}
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
+            <form onSubmit={handleSubmit} noValidate>
+              <div className="flex flex-col gap-4">
                 <Field
-                  label="Preferred Date"
-                  name="date"
-                  type="date"
-                  placeholder=""
+                  label="Full Name"
+                  name="name"
+                  placeholder="Your full name"
                 />
                 <Field
-                  label="Preferred Time"
-                  name="time"
-                  type="time"
-                  placeholder=""
+                  label="Phone Number"
+                  name="phone"
+                  type="tel"
+                  placeholder="+263 77 000 0000"
                 />
-              </div>
 
-              <div>
-                <label className="input-label" htmlFor="booking-notes">
-                  Notes (optional)
-                </label>
-                <textarea
-                  id="booking-notes"
-                  className="input"
-                  placeholder="Anything we should know…"
-                  value={form.notes}
-                  onChange={(e) =>
-                    setForm({ ...form, notes: e.target.value })
-                  }
-                  rows={3}
-                />
-              </div>
+                {/* Service select */}
+                <div>
+                  <label
+                    className="input-label"
+                    htmlFor="booking-service"
+                  >
+                    Service
+                  </label>
+                  <select
+                    id="booking-service"
+                    className={`input ${errors.service ? "input-error" : ""}`}
+                    value={form.service}
+                    onChange={(e) =>
+                      setForm({ ...form, service: e.target.value })
+                    }
+                  >
+                    <option value="">Select a service…</option>
+                    {services.map((s) => (
+                      <option key={s.title} value={s.title}>
+                        {s.title}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.service && (
+                    <p className="input-error-text">{errors.service}</p>
+                  )}
+                </div>
 
-              <RoundedSlideButton
-                icon={<CalendarCheck size={16} />}
-                className="w-full mt-2"
-              >
-                Confirm Booking
-              </RoundedSlideButton>
-            </div>
-          </form>
-        </DialogContent>
-      </Dialog>
+                <div className="grid grid-cols-2 gap-4">
+                  <Field
+                    label="Preferred Date"
+                    name="date"
+                    type="date"
+                    placeholder=""
+                  />
+                  <Field
+                    label="Preferred Time"
+                    name="time"
+                    type="time"
+                    placeholder=""
+                  />
+                </div>
+
+                <div>
+                  <label className="input-label" htmlFor="booking-notes">
+                    Notes (optional)
+                  </label>
+                  <textarea
+                    id="booking-notes"
+                    className="input"
+                    placeholder="Anything we should know…"
+                    value={form.notes}
+                    onChange={(e) =>
+                      setForm({ ...form, notes: e.target.value })
+                    }
+                    rows={3}
+                  />
+                </div>
+
+                <RoundedSlideButton
+                  icon={<CalendarCheck size={16} />}
+                  className="w-full mt-2"
+                >
+                  Confirm Booking
+                </RoundedSlideButton>
+              </div>
+            </form>
+          </DialogContent>
+        </Dialog>
+      )}
 
       <Toast
         message="Appointment request sent! We'll confirm shortly."
