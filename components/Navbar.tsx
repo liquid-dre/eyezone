@@ -22,6 +22,12 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const scrolled = scrollY > 50;
 
+  // Colors swap: white text on dark hero, dark text once scrolled
+  const textColor = scrolled ? "var(--fg)" : "#ffffff";
+  const linkColor = scrolled ? "var(--neutral-600)" : "rgba(255,255,255,0.8)";
+  const activeColor = scrolled ? "var(--blue-600)" : "#ffffff";
+  const hoverColor = scrolled ? "var(--blue-600)" : "#ffffff";
+
   const handleNav = (href: string) => {
     setMobileOpen(false);
     const id = href.replace("#", "");
@@ -44,7 +50,7 @@ export default function Navbar() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="block lg:hidden text-2xl"
-            style={{ background: "none", border: "none", color: "var(--fg)", cursor: "pointer" }}
+            style={{ background: "none", border: "none", color: textColor, cursor: "pointer", transition: "color 0.3s" }}
             onClick={() => setMobileOpen((prev) => !prev)}
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
@@ -78,8 +84,9 @@ export default function Navbar() {
               style={{
                 fontSize: "var(--text-lg)",
                 fontWeight: 700,
-                color: "var(--fg)",
+                color: textColor,
                 letterSpacing: "-0.02em",
+                transition: "color 0.3s",
               }}
             >
               The Eye Zone
@@ -106,14 +113,15 @@ export default function Navbar() {
                   <span
                     className="flex items-center h-[30px]"
                     style={{
-                      color: active === id ? "var(--blue-600)" : "var(--neutral-600)",
+                      color: active === id ? activeColor : linkColor,
+                      transition: "color 0.3s",
                     }}
                   >
                     {item.label}
                   </span>
                   <span
                     className="flex items-center h-[30px]"
-                    style={{ color: "var(--blue-600)" }}
+                    style={{ color: hoverColor }}
                   >
                     {item.label}
                   </span>
@@ -128,10 +136,11 @@ export default function Navbar() {
           <RoundedSlideButton
             onClick={openBookingModal}
             icon={<CalendarCheck size={16} />}
-            defaultBg="var(--blue-600)"
-            defaultText="#ffffff"
+            defaultBg={scrolled ? "var(--blue-600)" : "transparent"}
+            defaultText={scrolled ? "#ffffff" : "#ffffff"}
             hoverBg="#ffffff"
             hoverText="var(--blue-700)"
+            borderColor={scrolled ? "var(--blue-600)" : "#ffffff"}
           >
             Book Now
           </RoundedSlideButton>
