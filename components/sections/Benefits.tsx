@@ -48,7 +48,7 @@ export default function Benefits() {
 
         <div
           ref={ref}
-          className="mx-auto grid max-w-3xl grid-cols-1 gap-6 sm:grid-cols-2"
+          className="mx-auto grid max-w-5xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
         >
           {benefits.map((benefit, i) => (
             <motion.div
@@ -65,10 +65,7 @@ export default function Benefits() {
                 title={benefit.title}
                 subtitle={benefit.description}
                 icon={benefit.icon}
-                className={twMerge(
-                  blueShades[i % blueShades.length],
-                  i % 2 !== 0 && "sm:-translate-y-6"
-                )}
+                className={blueShades[i % blueShades.length]}
               />
             </motion.div>
           ))}
