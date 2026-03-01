@@ -114,7 +114,7 @@ export default function Hero() {
           </button>
           <button
             onClick={scrollToServices}
-            className="btn-secondary"
+            className="btn-secondary absolute right-0"
             aria-label="View services"
           >
             View Services
