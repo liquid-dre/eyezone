@@ -41,7 +41,7 @@ export default function BookingModal() {
       e.phone = "Enter a valid phone number";
     if (!form.service) e.service = "Please select a service";
     if (!form.date) e.date = "Please choose a date";
-    else if (!form.time) e.date = "Please select a time slot";
+    else if (!form.time) e.time = "Please select a time slot";
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -210,7 +210,7 @@ export default function BookingModal() {
                       onTimeChange={(t) =>
                         setForm((prev) => ({ ...prev, time: t }))
                       }
-                      error={errors.date}
+                      error={errors.date || errors.time}
                     />
 
                     <div>
