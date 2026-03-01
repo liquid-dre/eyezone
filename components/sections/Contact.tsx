@@ -181,7 +181,7 @@ export default function Contact() {
                     Location
                   </h4>
                   <p className="card-desc">
-                    123 Samora Machel Avenue, Harare, Zimbabwe
+                    29 Fife Avenue, Avenues, 00000, Harare, Zimbabwe
                   </p>
                 </div>
               </div>
@@ -201,7 +201,7 @@ export default function Contact() {
                   >
                     Phone
                   </h4>
-                  <p className="card-desc">+263 (4) 123 4567</p>
+                  <p className="card-desc">+263 24 2250335</p>
                 </div>
               </div>
 
