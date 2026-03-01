@@ -49,6 +49,76 @@ const TIME_SLOTS_SATURDAY = [
 
 const WEEKDAY_HEADERS = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
+/* ── Theme tokens ─────────────────────────────────── */
+interface ThemeTokens {
+  flipBorder: string;
+  flipHeaderBg: string;
+  flipHeaderText: string;
+  toggleBtn: string;
+  calendarBg: string;
+  readOnlyBg: string;
+  readOnlyLabel: string;
+  readOnlyValue: string;
+  statusOpen: string;
+  statusClosed: string;
+  timeLabelIcon: string;
+  timeLabelText: string;
+  timeGridBg: string;
+  slotBg: string;
+  slotText: string;
+  slotActiveBg: string;
+  slotActiveText: string;
+  warningBg: string;
+  warningIcon: string;
+  warningText: string;
+}
+
+const DARK_THEME: ThemeTokens = {
+  flipBorder: "rgba(255,255,255,0.2)",
+  flipHeaderBg: "rgba(255,255,255,0.1)",
+  flipHeaderText: "rgba(255,255,255,0.9)",
+  toggleBtn: "rgba(255,255,255,0.7)",
+  calendarBg: "#ffffff",
+  readOnlyBg: "rgba(255,255,255,0.08)",
+  readOnlyLabel: "rgba(255,255,255,0.45)",
+  readOnlyValue: "#ffffff",
+  statusOpen: "#6ee7b7",
+  statusClosed: "#fca5a5",
+  timeLabelIcon: "rgba(255,255,255,0.7)",
+  timeLabelText: "rgba(255,255,255,0.85)",
+  timeGridBg: "rgba(255,255,255,0.05)",
+  slotBg: "rgba(255,255,255,0.1)",
+  slotText: "rgba(255,255,255,0.8)",
+  slotActiveBg: "#ffffff",
+  slotActiveText: "var(--blue-700)",
+  warningBg: "rgba(239, 68, 68, 0.15)",
+  warningIcon: "#fca5a5",
+  warningText: "#fecaca",
+};
+
+const LIGHT_THEME: ThemeTokens = {
+  flipBorder: "var(--blue-200)",
+  flipHeaderBg: "var(--blue-600)",
+  flipHeaderText: "#ffffff",
+  toggleBtn: "rgba(255,255,255,0.8)",
+  calendarBg: "var(--neutral-50)",
+  readOnlyBg: "var(--blue-50)",
+  readOnlyLabel: "var(--neutral-400)",
+  readOnlyValue: "var(--fg)",
+  statusOpen: "#059669",
+  statusClosed: "#dc2626",
+  timeLabelIcon: "var(--neutral-400)",
+  timeLabelText: "var(--neutral-700)",
+  timeGridBg: "var(--neutral-50)",
+  slotBg: "var(--bg)",
+  slotText: "var(--neutral-600)",
+  slotActiveBg: "var(--blue-600)",
+  slotActiveText: "#ffffff",
+  warningBg: "rgba(239, 68, 68, 0.08)",
+  warningIcon: "#dc2626",
+  warningText: "#991b1b",
+};
+
 /* ── Calendar weeks computation ───────────────────── */
 function getCalendarWeeks(month: Date): (Date | null)[][] {
   const monthStart = startOfMonth(month);
@@ -80,6 +150,8 @@ interface FlipDateTimePickerProps {
   onDateChange: (iso: string) => void;
   onTimeChange: (time: string) => void;
   error?: string;
+  /** "dark" for dark backgrounds (BookingModal), "light" for white cards (Contact) */
+  variant?: "dark" | "light";
 }
 
 /* ── Component ────────────────────────────────────── */
@@ -89,7 +161,10 @@ export default function FlipDateTimePicker({
   onDateChange,
   onTimeChange,
   error,
+  variant = "dark",
 }: FlipDateTimePickerProps) {
+  const t = variant === "dark" ? DARK_THEME : LIGHT_THEME;
+
   const selectedDate = dateValue
     ? parse(dateValue, "yyyy-MM-dd", new Date())
     : null;
@@ -123,15 +198,22 @@ export default function FlipDateTimePicker({
     <div className="flex flex-col gap-3">
       {/* ── Flip Display ──────────────────────────── */}
       <div className="flex flex-col items-center">
-        <div className="w-fit overflow-hidden rounded-xl border-2 border-white/20 bg-white/10">
+        <div
+          className="w-fit overflow-hidden rounded-xl border-2"
+          style={{ borderColor: t.flipBorder, background: t.flipHeaderBg }}
+        >
           <div className="flex items-center justify-between gap-12 px-3 py-1">
-            <span className="text-sm uppercase tracking-wide text-white/90">
+            <span
+              className="text-sm uppercase tracking-wide"
+              style={{ color: t.flipHeaderText }}
+            >
               {format(displayDate, "LLLL")}
             </span>
             <button
               type="button"
               onClick={() => setCalendarOpen((pv) => !pv)}
-              className="text-white/70 transition-colors hover:text-white"
+              className="transition-colors"
+              style={{ color: t.toggleBtn }}
             >
               {calendarOpen ? (
                 <ChevronLeft size={16} />
@@ -204,7 +286,10 @@ export default function FlipDateTimePicker({
             exit={{ opacity: 0, height: 0 }}
             className="overflow-hidden"
           >
-            <div className="rounded-xl bg-white p-3">
+            <div
+              className="rounded-xl p-3"
+              style={{ background: t.calendarBg }}
+            >
               {/* Month nav */}
               <div className="mb-2 flex items-center justify-between">
                 <button
@@ -300,7 +385,13 @@ export default function FlipDateTimePicker({
           animate={{ opacity: 1, y: 0 }}
           className="grid grid-cols-3 gap-2"
         >
-          <ReadOnlyField label="Day" value={format(selectedDate, "EEEE")} />
+          <ReadOnlyField
+            label="Day"
+            value={format(selectedDate, "EEEE")}
+            bg={t.readOnlyBg}
+            labelColor={t.readOnlyLabel}
+            valueColor={t.readOnlyValue}
+          />
           <ReadOnlyField
             label="Hours"
             value={
@@ -308,11 +399,16 @@ export default function FlipDateTimePicker({
                 ? `${clinicHours.open} \u2013 ${clinicHours.close}`
                 : "Closed"
             }
+            bg={t.readOnlyBg}
+            labelColor={t.readOnlyLabel}
+            valueColor={t.readOnlyValue}
           />
           <ReadOnlyField
             label="Status"
             value={isClosed ? "Closed" : clinicHours!.label}
-            valueColor={isClosed ? "#fca5a5" : "#6ee7b7"}
+            bg={t.readOnlyBg}
+            labelColor={t.readOnlyLabel}
+            valueColor={isClosed ? t.statusClosed : t.statusOpen}
           />
         </motion.div>
       )}
@@ -324,14 +420,17 @@ export default function FlipDateTimePicker({
           animate={{ opacity: 1, y: 0 }}
         >
           <div className="mb-2 flex items-center gap-1.5">
-            <Clock size={14} className="text-white/70" />
-            <span className="text-sm font-medium text-white/85">
+            <Clock size={14} style={{ color: t.timeLabelIcon }} />
+            <span
+              className="text-sm font-medium"
+              style={{ color: t.timeLabelText }}
+            >
               Select a time
             </span>
           </div>
           <div
             className="grid grid-cols-3 gap-1.5 max-h-36 overflow-y-auto rounded-xl p-2"
-            style={{ background: "rgba(255,255,255,0.05)" }}
+            style={{ background: t.timeGridBg }}
           >
             {timeSlots.map((slot) => {
               const active = timeValue === slot;
@@ -342,10 +441,8 @@ export default function FlipDateTimePicker({
                   onClick={() => onTimeChange(slot)}
                   className="rounded-lg px-2 py-1.5 text-xs font-medium transition-all"
                   style={{
-                    background: active ? "#ffffff" : "rgba(255,255,255,0.1)",
-                    color: active
-                      ? "var(--blue-700)"
-                      : "rgba(255,255,255,0.8)",
+                    background: active ? t.slotActiveBg : t.slotBg,
+                    color: active ? t.slotActiveText : t.slotText,
                     boxShadow: active ? "var(--shadow-sm)" : "none",
                   }}
                 >
@@ -363,10 +460,10 @@ export default function FlipDateTimePicker({
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           className="flex items-center gap-2 rounded-lg px-3 py-2"
-          style={{ background: "rgba(239, 68, 68, 0.15)" }}
+          style={{ background: t.warningBg }}
         >
-          <Info size={14} style={{ color: "#fca5a5" }} className="shrink-0" />
-          <p className="text-xs" style={{ color: "#fecaca" }}>
+          <Info size={14} style={{ color: t.warningIcon }} className="shrink-0" />
+          <p className="text-xs" style={{ color: t.warningText }}>
             The clinic is closed on Sundays. Please select another day.
           </p>
         </motion.div>
@@ -381,26 +478,30 @@ export default function FlipDateTimePicker({
 function ReadOnlyField({
   label,
   value,
+  bg,
+  labelColor,
   valueColor,
 }: {
   label: string;
   value: string;
-  valueColor?: string;
+  bg: string;
+  labelColor: string;
+  valueColor: string;
 }) {
   return (
     <div
       className="rounded-lg px-3 py-2 text-center"
-      style={{ background: "rgba(255,255,255,0.08)" }}
+      style={{ background: bg }}
     >
       <p
         className="mb-0.5 text-[10px] uppercase tracking-wider"
-        style={{ color: "rgba(255,255,255,0.45)" }}
+        style={{ color: labelColor }}
       >
         {label}
       </p>
       <p
         className="text-sm font-semibold"
-        style={{ color: valueColor ?? "#ffffff" }}
+        style={{ color: valueColor }}
       >
         {value}
       </p>

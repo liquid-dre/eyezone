@@ -14,11 +14,13 @@ import {
 } from "lucide-react";
 import RoundedSlideButton from "@/components/ui/RoundedSlideButton";
 import Toast from "@/components/ui/Toast";
+import FlipDateTimePicker from "@/components/ui/FlipDateTimePicker";
 
 interface FormData {
   name: string;
   email: string;
   preferredDate: string;
+  preferredTime: string;
   message: string;
 }
 
@@ -26,6 +28,7 @@ const initialForm: FormData = {
   name: "",
   email: "",
   preferredDate: "",
+  preferredTime: "",
   message: "",
 };
 
@@ -135,12 +138,21 @@ export default function Contact() {
                   type="email"
                   placeholder="you@example.com"
                 />
-                <Field
-                  label="Preferred Date"
-                  name="preferredDate"
-                  type="date"
-                  placeholder=""
-                />
+                <div>
+                  <label className="input-label">Preferred Date &amp; Time</label>
+                  <FlipDateTimePicker
+                    dateValue={form.preferredDate}
+                    timeValue={form.preferredTime}
+                    onDateChange={(d) =>
+                      setForm({ ...form, preferredDate: d })
+                    }
+                    onTimeChange={(t) =>
+                      setForm({ ...form, preferredTime: t })
+                    }
+                    error={errors.preferredDate}
+                    variant="light"
+                  />
+                </div>
                 <Field
                   label="Message"
                   name="message"
