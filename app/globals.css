@@ -616,6 +616,15 @@ select.input {
   padding-right: 2.5rem;
 }
 
+/* ── Spring Modal (dark‑bg form overrides) ─────────── */
+.spring-modal .input-label {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.spring-modal .input-error-text {
+  color: #fca5a5;
+}
+
 /* ── Modal ──────────────────────────────────────────── */
 .modal-overlay {
   position: fixed;

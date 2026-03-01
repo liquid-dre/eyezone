@@ -1,20 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { CheckCircle } from "lucide-react";
+import { Phone, MapPin } from "lucide-react";
 
-const credentials = [
-  "MBChB, FCS(Ophth) — Fellowship-trained ophthalmologist",
-  "Over 15 years of clinical experience",
-  "Special interests: cataracts, glaucoma, paediatric ophthalmology",
-  "Member of the Ophthalmological Society of Southern Africa",
-  "Committed to continuing medical education",
-];
-
-const team = [
-  { initials: "AN", name: "Nurse Practitioner", role: "Clinical assessments & patient support" },
-  { initials: "TC", name: "Optometrist", role: "Refractions & contact lens fitting" },
-  { initials: "MW", name: "Patient Coordinator", role: "Scheduling & care navigation" },
+const contactDetails = [
+  { label: "Telephone", value: "+263 24 2250335" },
+  { label: "Address", value: "29 Fife Avenue, Avenues, 00000" },
+  { label: "Location", value: "Harare, Zimbabwe" },
 ];
 
 export default function Team() {
@@ -31,8 +23,7 @@ export default function Team() {
           <span className="section-label">Our Team</span>
           <h2 className="section-title mb-4">Meet Your Specialist</h2>
           <p className="section-subtitle mx-auto">
-            Led by an experienced ophthalmologist and supported by a dedicated
-            clinical team.
+            Your trusted ophthalmologist in Harare, Zimbabwe.
           </p>
         </motion.div>
 
@@ -86,7 +77,7 @@ export default function Team() {
                 color: "var(--fg)",
               }}
             >
-              Dr. A. Ndoro
+              Dr. Dennis Sibanda
             </h3>
             <p
               style={{
@@ -95,68 +86,50 @@ export default function Team() {
                 marginBottom: "var(--space-xl)",
               }}
             >
-              Consultant Ophthalmologist
+              Ophthalmologist
             </p>
 
-            <div className="flex flex-col gap-3 mb-10">
-              {credentials.map((c) => (
-                <div key={c} className="flex items-start gap-3">
-                  <CheckCircle
-                    size={18}
-                    style={{
-                      color: "var(--blue-500)",
-                      marginTop: 3,
-                      flexShrink: 0,
-                    }}
-                  />
-                  <span
-                    style={{
-                      fontSize: "var(--text-base)",
-                      color: "var(--neutral-600)",
-                      lineHeight: "var(--leading-relaxed)",
-                    }}
-                  >
-                    {c}
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            {/* Support staff */}
-            <h4
-              className="font-display mb-4"
-              style={{
-                fontSize: "var(--text-lg)",
-                fontWeight: 600,
-                color: "var(--fg)",
-              }}
-            >
-              Support Team
-            </h4>
             <div className="flex flex-col gap-4">
-              {team.map((member) => (
-                <div key={member.name} className="flex items-center gap-3">
-                  <div className="testimonial-avatar" style={{ width: "2.25rem", height: "2.25rem", fontSize: "var(--text-xs)" }}>
-                    {member.initials}
-                  </div>
+              {contactDetails.map((detail) => (
+                <div key={detail.label} className="flex items-start gap-3">
+                  {detail.label === "Telephone" ? (
+                    <Phone
+                      size={18}
+                      style={{
+                        color: "var(--blue-500)",
+                        marginTop: 3,
+                        flexShrink: 0,
+                      }}
+                    />
+                  ) : (
+                    <MapPin
+                      size={18}
+                      style={{
+                        color: "var(--blue-500)",
+                        marginTop: 3,
+                        flexShrink: 0,
+                      }}
+                    />
+                  )}
                   <div>
-                    <div
+                    <span
                       style={{
                         fontWeight: 600,
                         fontSize: "var(--text-sm)",
                         color: "var(--fg)",
                       }}
                     >
-                      {member.name}
-                    </div>
-                    <div
+                      {detail.label}
+                    </span>
+                    <p
                       style={{
-                        fontSize: "var(--text-xs)",
-                        color: "var(--neutral-400)",
+                        fontSize: "var(--text-base)",
+                        color: "var(--neutral-600)",
+                        lineHeight: "var(--leading-relaxed)",
                       }}
                     >
-                      {member.role}
-                    </div>
+                      {detail.value}
+                    </p>
                   </div>
                 </div>
               ))}

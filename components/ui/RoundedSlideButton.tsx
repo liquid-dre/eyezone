@@ -14,6 +14,8 @@ interface RoundedSlideButtonProps {
   hoverText?: string;
   borderColor?: string;
   className?: string;
+  target?: string;
+  rel?: string;
 }
 
 export default function RoundedSlideButton({
@@ -27,6 +29,8 @@ export default function RoundedSlideButton({
   hoverText = "var(--blue-600)",
   borderColor,
   className = "",
+  target,
+  rel,
 }: RoundedSlideButtonProps) {
   const style = {
     "--btn-bg": defaultBg,
@@ -45,7 +49,7 @@ export default function RoundedSlideButton({
 
   if (href) {
     return (
-      <Link href={href} className={`btn-slide ${className}`} style={style}>
+      <Link href={href} className={`btn-slide ${className}`} style={style} target={target} rel={rel}>
         {content}
       </Link>
     );

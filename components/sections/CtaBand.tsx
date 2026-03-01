@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { CalendarCheck, MessageCircle } from "lucide-react";
-import { openBookingModal } from "@/lib/hooks";
+import RoundedSlideButton from "@/components/ui/RoundedSlideButton";
 
 export default function CtaBand() {
   return (
@@ -45,24 +45,30 @@ export default function CtaBand() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] as const }}
         >
-          <button
-            onClick={openBookingModal}
-            className="btn-white"
-            aria-label="Book an appointment"
+          <RoundedSlideButton
+            href="#contact"
+            icon={<CalendarCheck size={18} />}
+            defaultBg="#ffffff"
+            defaultText="var(--blue-600)"
+            hoverBg="var(--blue-600)"
+            hoverText="#ffffff"
+            borderColor="#ffffff"
           >
-            <CalendarCheck size={18} />
             Book an Appointment
-          </button>
-          <a
+          </RoundedSlideButton>
+          <RoundedSlideButton
             href="https://wa.me/263770000000"
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-white-outline"
-            aria-label="Contact via WhatsApp"
+            icon={<MessageCircle size={18} />}
+            defaultBg="transparent"
+            defaultText="#ffffff"
+            hoverBg="#ffffff"
+            hoverText="var(--blue-600)"
+            borderColor="rgba(255,255,255,0.3)"
           >
-            <MessageCircle size={18} />
             WhatsApp Us
-          </a>
+          </RoundedSlideButton>
         </motion.div>
       </div>
     </section>

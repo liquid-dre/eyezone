@@ -12,6 +12,7 @@ import {
   Instagram,
   Twitter,
 } from "lucide-react";
+import RoundedSlideButton from "@/components/ui/RoundedSlideButton";
 import Toast from "@/components/ui/Toast";
 
 interface FormData {
@@ -146,10 +147,12 @@ export default function Contact() {
                   placeholder="Tell us how we can help…"
                   textarea
                 />
-                <button type="submit" className="btn-primary w-full mt-2">
-                  <Send size={16} />
+                <RoundedSlideButton
+                  icon={<Send size={16} />}
+                  className="w-full mt-2"
+                >
                   Send Message
-                </button>
+                </RoundedSlideButton>
               </div>
             </motion.form>
 
@@ -181,7 +184,7 @@ export default function Contact() {
                     Location
                   </h4>
                   <p className="card-desc">
-                    123 Samora Machel Avenue, Harare, Zimbabwe
+                    29 Fife Avenue, Avenues, 00000, Harare, Zimbabwe
                   </p>
                 </div>
               </div>
@@ -201,7 +204,7 @@ export default function Contact() {
                   >
                     Phone
                   </h4>
-                  <p className="card-desc">+263 (4) 123 4567</p>
+                  <p className="card-desc">+263 24 2250335</p>
                 </div>
               </div>
 
