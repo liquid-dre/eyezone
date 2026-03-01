@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Eye, Menu, X, CalendarCheck } from "lucide-react";
+import { Eye, Menu, ArrowRight, CalendarCheck } from "lucide-react";
 import { navItems } from "@/lib/data";
 import { useScrollPosition, useActiveSection, openBookingModal } from "@/lib/hooks";
+import RoundedSlideButton from "@/components/ui/RoundedSlideButton";
 
 const sectionIds = [
   "services",
@@ -28,16 +29,29 @@ export default function Navbar() {
   };
 
   return (
-    <>
-      <nav
-        className={`nav ${scrolled ? "nav-scrolled" : ""}`}
-        role="navigation"
-        aria-label="Main navigation"
+    <nav
+      className={`nav ${scrolled ? "nav-scrolled" : ""}`}
+      role="navigation"
+      aria-label="Main navigation"
+    >
+      <div
+        className="flex items-center justify-between mx-auto"
+        style={{ maxWidth: "var(--container-lg)" }}
       >
-        <div
-          className="flex items-center justify-between mx-auto"
-          style={{ maxWidth: "var(--container-lg)" }}
-        >
+        {/* Left: hamburger + logo + nav links */}
+        <div className="flex items-center gap-6">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="block lg:hidden text-2xl"
+            style={{ background: "none", border: "none", color: "var(--fg)", cursor: "pointer" }}
+            onClick={() => setMobileOpen((prev) => !prev)}
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileOpen}
+          >
+            <Menu size={24} />
+          </motion.button>
+
           {/* Logo */}
           <a
             href="#hero"
@@ -64,7 +78,7 @@ export default function Navbar() {
               style={{
                 fontSize: "var(--text-lg)",
                 fontWeight: 700,
-                color: scrolled ? "var(--fg)" : "var(--fg)",
+                color: "var(--fg)",
                 letterSpacing: "-0.02em",
               }}
             >
@@ -72,130 +86,159 @@ export default function Navbar() {
             </span>
           </a>
 
-          {/* Desktop links */}
-          <div className="hidden lg:flex items-center gap-1">
-            {navItems.map((item) => {
-              const id = item.href.replace("#", "");
-              return (
-                <button
-                  key={item.href}
-                  onClick={() => handleNav(item.href)}
-                  className={`nav-link ${active === id ? "nav-link-active" : ""}`}
-                >
-                  {item.label}
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Desktop CTA */}
-          <div className="hidden lg:block">
-            <button
-              onClick={openBookingModal}
-              className="btn-primary"
-              style={{ padding: "0.625rem 1.5rem", fontSize: "var(--text-sm)" }}
-            >
-              <CalendarCheck size={16} />
-              Book Now
-            </button>
-          </div>
-
-          {/* Mobile hamburger */}
-          <button
-            className="lg:hidden flex items-center justify-center"
-            style={{
-              width: 40,
-              height: 40,
-              background: "none",
-              border: "none",
-              color: "var(--fg)",
-              cursor: "pointer",
-            }}
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label={mobileOpen ? "Close menu" : "Open menu"}
-            aria-expanded={mobileOpen}
-          >
-            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
-      </nav>
-
-      {/* Mobile menu */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            className="fixed inset-0 z-[99] lg:hidden"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            {/* Backdrop */}
-            <div
-              className="absolute inset-0"
-              style={{ background: "rgba(15,23,42,0.4)", backdropFilter: "blur(4px)" }}
-              onClick={() => setMobileOpen(false)}
-            />
-            {/* Panel */}
-            <motion.div
-              className="absolute top-0 right-0 h-full w-72 bg-white flex flex-col"
-              style={{
-                boxShadow: "var(--shadow-xl)",
-                padding: "var(--space-2xl) var(--space-xl)",
-              }}
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] as const }}
-            >
+          {/* Desktop nav links with flip animation */}
+          {navItems.map((item) => {
+            const id = item.href.replace("#", "");
+            return (
               <button
-                onClick={() => setMobileOpen(false)}
-                aria-label="Close menu"
+                key={item.href}
+                onClick={() => handleNav(item.href)}
+                className="hidden lg:block h-[30px] overflow-hidden"
                 style={{
-                  alignSelf: "flex-end",
                   background: "none",
                   border: "none",
                   cursor: "pointer",
-                  color: "var(--neutral-500)",
-                  marginBottom: "var(--space-xl)",
+                  fontWeight: 500,
+                  fontSize: "var(--text-sm)",
                 }}
               >
-                <X size={24} />
-              </button>
-
-              <div className="flex flex-col gap-2">
-                {navItems.map((item) => (
-                  <button
-                    key={item.href}
-                    onClick={() => handleNav(item.href)}
-                    className="nav-link"
+                <motion.div whileHover={{ y: -30 }}>
+                  <span
+                    className="flex items-center h-[30px]"
                     style={{
-                      textAlign: "left",
-                      padding: "var(--space-sm) 0",
-                      fontSize: "var(--text-lg)",
+                      color: active === id ? "var(--blue-600)" : "var(--neutral-600)",
                     }}
                   >
                     {item.label}
-                  </button>
-                ))}
-              </div>
+                  </span>
+                  <span
+                    className="flex items-center h-[30px]"
+                    style={{ color: "var(--blue-600)" }}
+                  >
+                    {item.label}
+                  </span>
+                </motion.div>
+              </button>
+            );
+          })}
+        </div>
 
-              <div className="mt-auto">
-                <button
-                  onClick={() => {
-                    setMobileOpen(false);
-                    openBookingModal();
-                  }}
-                  className="btn-primary w-full"
-                >
-                  <CalendarCheck size={18} />
-                  Book Now
-                </button>
-              </div>
+        {/* Right: Book Now button */}
+        <div className="hidden lg:block">
+          <RoundedSlideButton
+            onClick={openBookingModal}
+            icon={<CalendarCheck size={16} />}
+            defaultBg="var(--blue-600)"
+            defaultText="#ffffff"
+            hoverBg="#ffffff"
+            hoverText="var(--blue-700)"
+          >
+            Book Now
+          </RoundedSlideButton>
+        </div>
+      </div>
+
+      {/* Mobile dropdown menu */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            variants={menuVariants}
+            initial="closed"
+            animate="open"
+            exit="closed"
+            className="absolute left-0 right-0 top-full origin-top flex flex-col gap-4"
+            style={{
+              padding: "var(--space-lg) var(--space-xl)",
+              background: "rgba(255, 255, 255, 0.95)",
+              backdropFilter: "blur(20px)",
+              boxShadow: "var(--shadow-lg)",
+            }}
+          >
+            {navItems.map((item) => (
+              <motion.button
+                key={item.href}
+                variants={menuLinkVariants}
+                onClick={() => handleNav(item.href)}
+                className="h-[30px] overflow-hidden font-medium text-lg flex items-start gap-2"
+                style={{ background: "none", border: "none", cursor: "pointer", textAlign: "left" }}
+              >
+                <motion.span variants={menuLinkArrowVariants}>
+                  <ArrowRight className="h-[30px]" style={{ color: "var(--fg)" }} />
+                </motion.span>
+                <motion.div whileHover={{ y: -30 }}>
+                  <span
+                    className="flex items-center h-[30px]"
+                    style={{ color: "var(--neutral-500)" }}
+                  >
+                    {item.label}
+                  </span>
+                  <span
+                    className="flex items-center h-[30px]"
+                    style={{ color: "var(--blue-600)" }}
+                  >
+                    {item.label}
+                  </span>
+                </motion.div>
+              </motion.button>
+            ))}
+
+            {/* Mobile Book Now */}
+            <motion.div variants={menuLinkVariants} style={{ marginTop: "var(--space-sm)" }}>
+              <RoundedSlideButton
+                onClick={() => {
+                  setMobileOpen(false);
+                  openBookingModal();
+                }}
+                icon={<CalendarCheck size={18} />}
+                defaultBg="var(--blue-600)"
+                defaultText="#ffffff"
+                hoverBg="#ffffff"
+                hoverText="var(--blue-700)"
+                className="w-full"
+              >
+                Book Now
+              </RoundedSlideButton>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </nav>
   );
 }
+
+const menuVariants = {
+  open: {
+    scaleY: 1,
+    transition: {
+      when: "beforeChildren" as const,
+      staggerChildren: 0.1,
+    },
+  },
+  closed: {
+    scaleY: 0,
+    transition: {
+      when: "afterChildren" as const,
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const menuLinkVariants = {
+  open: {
+    y: 0,
+    opacity: 1,
+  },
+  closed: {
+    y: -10,
+    opacity: 0,
+  },
+};
+
+const menuLinkArrowVariants = {
+  open: {
+    x: 0,
+  },
+  closed: {
+    x: -4,
+  },
+};
