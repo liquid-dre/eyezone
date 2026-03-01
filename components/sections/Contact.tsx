@@ -36,6 +36,7 @@ export default function Contact() {
   const [form, setForm] = useState<FormData>(initialForm);
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
   const [showToast, setShowToast] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const validate = () => {
     const e: typeof errors = {};
@@ -48,12 +49,25 @@ export default function Contact() {
     return Object.keys(e).length === 0;
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!validate()) return;
-    setForm(initialForm);
-    setErrors({});
-    setShowToast(true);
+    if (!validate() || submitting) return;
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error("send failed");
+      setForm(initialForm);
+      setErrors({});
+      setShowToast(true);
+    } catch {
+      setErrors({ name: "Something went wrong — please try again." });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const Field = ({
@@ -162,8 +176,9 @@ export default function Contact() {
                 <RoundedSlideButton
                   icon={<Send size={16} />}
                   className="w-full mt-2"
+                  disabled={submitting}
                 >
-                  Send Message
+                  {submitting ? "Sending…" : "Send Message"}
                 </RoundedSlideButton>
               </div>
             </motion.form>

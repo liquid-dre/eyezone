@@ -32,6 +32,7 @@ export default function BookingModal() {
   const [form, setForm] = useState<BookingForm>(initial);
   const [errors, setErrors] = useState<Partial<Record<keyof BookingForm, string>>>({});
   const [showToast, setShowToast] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const validate = () => {
     const e: typeof errors = {};
@@ -46,13 +47,26 @@ export default function BookingModal() {
     return Object.keys(e).length === 0;
   };
 
-  const handleSubmit = (ev: FormEvent) => {
+  const handleSubmit = async (ev: FormEvent) => {
     ev.preventDefault();
-    if (!validate()) return;
-    setForm(initial);
-    setErrors({});
-    closeBookingModal();
-    setShowToast(true);
+    if (!validate() || submitting) return;
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/booking", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error("send failed");
+      setForm(initial);
+      setErrors({});
+      closeBookingModal();
+      setShowToast(true);
+    } catch {
+      setErrors({ name: "Something went wrong — please try again." });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const Field = ({
@@ -235,8 +249,9 @@ export default function BookingModal() {
                         hoverBg="var(--blue-600)"
                         hoverText="#ffffff"
                         borderColor="#ffffff"
+                        disabled={submitting}
                       >
-                        Confirm
+                        {submitting ? "Sending…" : "Confirm"}
                       </RoundedSlideButton>
                     </div>
                   </div>
