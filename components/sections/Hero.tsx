@@ -2,10 +2,11 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { ArrowDown, CalendarCheck, ChevronRight, Sparkles, Activity, Clock } from "lucide-react";
+import { CalendarCheck, ChevronRight, Sparkles, Activity, Clock } from "lucide-react";
 import FloatingOrbs from "@/components/visuals/FloatingOrbs";
 import LensArcs from "@/components/visuals/LensArcs";
 import TrueFocus from "@/components/ui/TrueFocus";
+import RoundedSlideButton from "@/components/ui/RoundedSlideButton";
 import { useMouseParallax } from "@/lib/hooks";
 import { openBookingModal } from "@/lib/hooks";
 
@@ -29,10 +30,6 @@ const trustItems = [
 
 export default function Hero() {
   const mouse = useMouseParallax(0.015);
-
-  const scrollToServices = () => {
-    document.getElementById("services")?.scrollIntoView({ behavior: "smooth" });
-  };
 
   return (
     <section
@@ -104,22 +101,29 @@ export default function Hero() {
           variants={fadeUp}
           className="relative flex items-center justify-center gap-4 mb-12 w-full"
         >
-          <button
+          <RoundedSlideButton
             onClick={openBookingModal}
-            className="btn-primary absolute left-0"
-            aria-label="Book an appointment"
+            icon={<CalendarCheck size={18} />}
+            defaultBg="var(--blue-600)"
+            defaultText="#ffffff"
+            hoverBg="#ffffff"
+            hoverText="var(--blue-700)"
+            className="absolute left-0"
           >
-            <CalendarCheck size={18} />
             Book an Appointment
-          </button>
-          <button
-            onClick={scrollToServices}
-            className="btn-secondary absolute right-15"
-            aria-label="View services"
+          </RoundedSlideButton>
+          <RoundedSlideButton
+            href="#services"
+            icon={<ChevronRight size={16} />}
+            defaultBg="transparent"
+            defaultText="#ffffff"
+            hoverBg="#ffffff"
+            hoverText="var(--blue-700)"
+            borderColor="rgba(255, 255, 255, 0.4)"
+            className="absolute right-15"
           >
             View Services
-            <ChevronRight size={16} />
-          </button>
+          </RoundedSlideButton>
         </motion.div>
 
         {/* Trust strip */}
