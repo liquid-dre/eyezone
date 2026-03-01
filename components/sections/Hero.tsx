@@ -101,7 +101,7 @@ export default function Hero() {
           variants={fadeUp}
           className="flex items-center mb-12 w-full"
         >
-          <div className="flex justify-end flex-1 pr-3">
+          <div className="flex justify-end flex-1 pr-12">
             <RoundedSlideButton
               onClick={openBookingModal}
               icon={<CalendarCheck size={18} />}
@@ -113,7 +113,7 @@ export default function Hero() {
               Book an Appointment
             </RoundedSlideButton>
           </div>
-          <div className="flex justify-start flex-1 pl-3">
+          <div className="flex justify-start flex-1 pl-12">
             <RoundedSlideButton
               href="#services"
               icon={<ChevronRight size={16} />}
