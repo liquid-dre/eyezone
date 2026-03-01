@@ -61,18 +61,13 @@ export default function Hero() {
 
       {/* Content */}
       <motion.div
-        className="relative z-10 flex flex-col items-center px-6 text-center"
+        className="relative z-10 flex flex-col items-center px-6 text-center pt-24"
         style={{ maxWidth: "var(--container)" }}
         variants={container}
         initial="hidden"
         animate="show"
       >
-        <motion.div variants={fadeUp}>
-          <span className="badge badge-white mb-6 inline-flex">
-            <Sparkles size={12} />
-            Harare&apos;s Premier Eye Clinic
-          </span>
-        </motion.div>
+        
 
         <motion.div
           variants={fadeUp}
