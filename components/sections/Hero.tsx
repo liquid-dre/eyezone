@@ -87,10 +87,7 @@ export default function Hero() {
           Your Vision Deserves{" "}
           <span
             style={{
-              background: "linear-gradient(135deg, var(--blue-300), var(--blue-100))",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
+              color: "var(--blue-300)",
             }}
           >
             Expert Care
