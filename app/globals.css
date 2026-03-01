@@ -710,22 +710,22 @@ select.input {
 /* ── Hero-specific ──────────────────────────────────── */
 .hero-bg {
   position: absolute;
-  inset: 0;
+  inset: 20px;
   z-index: 0;
   overflow: hidden;
-  background: linear-gradient(160deg, var(--bg) 0%, var(--blue-50) 40%, var(--bg) 100%);
+  border-radius: var(--radius-2xl);
 }
 
-.hero-radial {
+.hero-overlay {
   position: absolute;
-  width: 900px;
-  height: 900px;
-  border-radius: 50%;
-  background: radial-gradient(circle, var(--blue-100) 0%, transparent 70%);
-  opacity: 0.5;
-  top: -300px;
-  right: -200px;
-  pointer-events: none;
+  inset: 0;
+  background: linear-gradient(
+    160deg,
+    rgba(0, 0, 0, 0.65) 0%,
+    rgba(10, 30, 60, 0.55) 50%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+  z-index: 1;
 }
 
 /* ── Trust Strip ────────────────────────────────────── */
