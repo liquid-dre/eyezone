@@ -194,10 +194,10 @@ export default function BookingModal() {
                       dateValue={form.date}
                       timeValue={form.time}
                       onDateChange={(d) =>
-                        setForm({ ...form, date: d })
+                        setForm((prev) => ({ ...prev, date: d }))
                       }
                       onTimeChange={(t) =>
-                        setForm({ ...form, time: t })
+                        setForm((prev) => ({ ...prev, time: t }))
                       }
                       error={errors.date}
                     />

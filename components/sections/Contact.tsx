@@ -144,10 +144,10 @@ export default function Contact() {
                     dateValue={form.preferredDate}
                     timeValue={form.preferredTime}
                     onDateChange={(d) =>
-                      setForm({ ...form, preferredDate: d })
+                      setForm((prev) => ({ ...prev, preferredDate: d }))
                     }
                     onTimeChange={(t) =>
-                      setForm({ ...form, preferredTime: t })
+                      setForm((prev) => ({ ...prev, preferredTime: t }))
                     }
                     error={errors.preferredDate}
                     variant="light"
