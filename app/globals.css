@@ -430,6 +430,60 @@ body {
   transform: translateY(-1px);
 }
 
+/* ── Slide Button ──────────────────────────────────── */
+.btn-slide {
+  position: relative;
+  z-index: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: 0.875rem 2rem;
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--btn-text);
+  background: var(--btn-bg);
+  border: 1.5px solid var(--btn-border, var(--btn-bg));
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  overflow: hidden;
+  transition: color 2500ms var(--ease-out), transform 2000ms var(--ease-out);
+  white-space: nowrap;
+  text-decoration: none;
+  line-height: 1;
+}
+
+.btn-slide::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  translate: 150% 150%;
+  scale: 2.5;
+  border-radius: 50%;
+  background: var(--btn-hover-bg);
+  transition: translate 2500ms var(--ease-out);
+}
+
+.btn-slide:hover {
+  color: var(--btn-hover-text);
+  transform: scale(1.05);
+}
+
+.btn-slide:hover::before {
+  translate: 0 0;
+}
+
+.btn-slide:active {
+  transform: scale(0.95);
+}
+
+.btn-slide:focus-visible {
+  outline: 2px solid var(--blue-400);
+  outline-offset: 2px;
+}
+
 /* ── Navbar ─────────────────────────────────────────── */
 .nav {
   position: fixed;
