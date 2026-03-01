@@ -17,7 +17,7 @@ import {
   isBefore,
   startOfDay,
 } from "date-fns";
-import { ChevronLeft, ChevronRight, Clock, CalendarDays, Info } from "lucide-react";
+import { ChevronLeft, ChevronRight, Clock, Info } from "lucide-react";
 
 /* ── Clinic schedule ──────────────────────────────── */
 const CLINIC_HOURS: Record<
@@ -54,7 +54,6 @@ interface ThemeTokens {
   flipBorder: string;
   flipHeaderBg: string;
   flipHeaderText: string;
-  toggleBtn: string;
   calendarBg: string;
   readOnlyBg: string;
   readOnlyLabel: string;
@@ -77,7 +76,6 @@ const DARK_THEME: ThemeTokens = {
   flipBorder: "rgba(255,255,255,0.2)",
   flipHeaderBg: "rgba(255,255,255,0.1)",
   flipHeaderText: "rgba(255,255,255,0.9)",
-  toggleBtn: "rgba(255,255,255,0.7)",
   calendarBg: "#ffffff",
   readOnlyBg: "rgba(255,255,255,0.08)",
   readOnlyLabel: "rgba(255,255,255,0.45)",
@@ -100,7 +98,6 @@ const LIGHT_THEME: ThemeTokens = {
   flipBorder: "var(--blue-200)",
   flipHeaderBg: "var(--blue-600)",
   flipHeaderText: "#ffffff",
-  toggleBtn: "rgba(255,255,255,0.8)",
   calendarBg: "var(--neutral-50)",
   readOnlyBg: "var(--blue-50)",
   readOnlyLabel: "var(--neutral-400)",
@@ -173,7 +170,6 @@ export default function FlipDateTimePicker({
     startOfMonth(selectedDate ?? new Date())
   );
   const [flipIndex, setFlipIndex] = useState(0);
-  const [calendarOpen, setCalendarOpen] = useState(true);
 
   const today = startOfDay(new Date());
   const weeks = useMemo(() => getCalendarWeeks(currentMonth), [currentMonth]);
@@ -182,7 +178,6 @@ export default function FlipDateTimePicker({
     const iso = format(date, "yyyy-MM-dd");
     onDateChange(iso);
     setFlipIndex((pv) => pv + 1);
-    setCalendarOpen(false);
     if (dateValue && iso !== dateValue) onTimeChange("");
   };
 
@@ -202,25 +197,13 @@ export default function FlipDateTimePicker({
           className="w-fit overflow-hidden rounded-xl border-2"
           style={{ borderColor: t.flipBorder, background: t.flipHeaderBg }}
         >
-          <div className="flex items-center justify-between gap-12 px-3 py-1">
+          <div className="flex items-center justify-center px-3 py-1">
             <span
               className="text-sm uppercase tracking-wide"
               style={{ color: t.flipHeaderText }}
             >
               {format(displayDate, "LLLL")}
             </span>
-            <button
-              type="button"
-              onClick={() => setCalendarOpen((pv) => !pv)}
-              className="transition-colors"
-              style={{ color: t.toggleBtn }}
-            >
-              {calendarOpen ? (
-                <ChevronLeft size={16} />
-              ) : (
-                <CalendarDays size={16} />
-              )}
-            </button>
           </div>
           <div className="relative z-0 h-28 w-44 shrink-0">
             <AnimatePresence mode="sync">
@@ -278,105 +261,94 @@ export default function FlipDateTimePicker({
       </div>
 
       {/* ── Calendar Grid ─────────────────────────── */}
-      <AnimatePresence>
-        {calendarOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="overflow-hidden"
+      <div
+        className="rounded-xl p-3"
+        style={{ background: t.calendarBg }}
+      >
+        {/* Month nav */}
+        <div className="mb-2 flex items-center justify-between">
+          <button
+            type="button"
+            onClick={() => setCurrentMonth((m) => subMonths(m, 1))}
+            className="rounded p-1 transition-colors"
+            style={{ color: "var(--blue-600)" }}
           >
+            <ChevronLeft size={16} />
+          </button>
+          <span
+            className="text-sm font-semibold"
+            style={{ color: "var(--fg)" }}
+          >
+            {format(currentMonth, "MMMM yyyy")}
+          </span>
+          <button
+            type="button"
+            onClick={() => setCurrentMonth((m) => addMonths(m, 1))}
+            className="rounded p-1 transition-colors"
+            style={{ color: "var(--blue-600)" }}
+          >
+            <ChevronRight size={16} />
+          </button>
+        </div>
+
+        {/* Weekday headers */}
+        <div className="grid grid-cols-7 mb-1">
+          {WEEKDAY_HEADERS.map((wd) => (
             <div
-              className="rounded-xl p-3"
-              style={{ background: t.calendarBg }}
+              key={wd}
+              className="py-1 text-center text-xs font-medium"
+              style={{ color: "var(--neutral-400)" }}
             >
-              {/* Month nav */}
-              <div className="mb-2 flex items-center justify-between">
-                <button
-                  type="button"
-                  onClick={() => setCurrentMonth((m) => subMonths(m, 1))}
-                  className="rounded p-1 transition-colors"
-                  style={{ color: "var(--blue-600)" }}
-                >
-                  <ChevronLeft size={16} />
-                </button>
-                <span
-                  className="text-sm font-semibold"
-                  style={{ color: "var(--fg)" }}
-                >
-                  {format(currentMonth, "MMMM yyyy")}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setCurrentMonth((m) => addMonths(m, 1))}
-                  className="rounded p-1 transition-colors"
-                  style={{ color: "var(--blue-600)" }}
-                >
-                  <ChevronRight size={16} />
-                </button>
-              </div>
-
-              {/* Weekday headers */}
-              <div className="grid grid-cols-7 mb-1">
-                {WEEKDAY_HEADERS.map((wd) => (
-                  <div
-                    key={wd}
-                    className="py-1 text-center text-xs font-medium"
-                    style={{ color: "var(--neutral-400)" }}
-                  >
-                    {wd}
-                  </div>
-                ))}
-              </div>
-
-              {/* Date cells */}
-              {weeks.map((week, wi) => (
-                <div key={wi} className="grid grid-cols-7">
-                  {week.map((date, di) => {
-                    if (!date) {
-                      return <div key={`e${wi}${di}`} className="h-7" />;
-                    }
-
-                    const isPast = isBefore(date, today);
-                    const isSunday = date.getDay() === 0;
-                    const isSelected =
-                      selectedDate !== null && isSameDay(date, selectedDate);
-                    const isToday = isSameDay(date, today);
-                    const disabled = isPast || isSunday;
-
-                    return (
-                      <button
-                        key={`d${wi}${di}`}
-                        type="button"
-                        disabled={disabled}
-                        onClick={() => handleSelectDate(date)}
-                        className="h-7 rounded-md text-sm transition-all"
-                        style={{
-                          background: isSelected
-                            ? "var(--blue-600)"
-                            : "transparent",
-                          color: isSelected
-                            ? "#fff"
-                            : isToday
-                              ? "var(--blue-600)"
-                              : disabled
-                                ? "var(--neutral-300)"
-                                : "var(--fg)",
-                          fontWeight: isSelected || isToday ? 600 : 400,
-                          cursor: disabled ? "not-allowed" : "pointer",
-                          opacity: disabled ? 0.4 : 1,
-                        }}
-                      >
-                        {date.getDate()}
-                      </button>
-                    );
-                  })}
-                </div>
-              ))}
+              {wd}
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          ))}
+        </div>
+
+        {/* Date cells */}
+        {weeks.map((week, wi) => (
+          <div key={wi} className="grid grid-cols-7">
+            {week.map((date, di) => {
+              if (!date) {
+                return <div key={`e${wi}${di}`} className="h-7" />;
+              }
+
+              const isPast = isBefore(date, today);
+              const isSunday = date.getDay() === 0;
+              const isSelected =
+                selectedDate !== null && isSameDay(date, selectedDate);
+              const isToday = isSameDay(date, today);
+              const disabled = isPast || isSunday;
+
+              return (
+                <button
+                  key={`d${wi}${di}`}
+                  type="button"
+                  disabled={disabled}
+                  onClick={() => handleSelectDate(date)}
+                  className="h-7 rounded-md text-sm transition-all"
+                  style={{
+                    background: isSelected
+                      ? "var(--blue-600)"
+                      : "transparent",
+                    color: isSelected
+                      ? "#fff"
+                      : isToday
+                        ? "var(--blue-600)"
+                        : disabled
+                          ? "var(--neutral-300)"
+                          : "var(--fg)",
+                    fontWeight: isSelected || isToday ? 600 : 400,
+                    cursor: disabled ? "not-allowed" : "pointer",
+                    opacity: disabled ? 0.4 : 1,
+                  }}
+                >
+                  {date.getDate()}
+                </button>
+              );
+            })}
+          </div>
+        ))}
+      </div>
 
       {/* ── Read-only Day Info ─────────────────────── */}
       {selectedDate && (
