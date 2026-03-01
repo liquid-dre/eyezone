@@ -99,7 +99,7 @@ export default function Hero() {
 
         <motion.div
           variants={fadeUp}
-          className="relative flex items-center justify-center gap-4 mb-12 w-full"
+          className="flex items-center justify-center gap-6 mb-12"
         >
           <RoundedSlideButton
             onClick={openBookingModal}
@@ -108,7 +108,6 @@ export default function Hero() {
             defaultText="#ffffff"
             hoverBg="#ffffff"
             hoverText="var(--blue-700)"
-            className="absolute left-0"
           >
             Book an Appointment
           </RoundedSlideButton>
@@ -120,7 +119,6 @@ export default function Hero() {
             hoverBg="#ffffff"
             hoverText="var(--blue-700)"
             borderColor="rgba(255, 255, 255, 0.4)"
-            className="absolute right-15"
           >
             View Services
           </RoundedSlideButton>
