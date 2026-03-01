@@ -37,7 +37,7 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative flex min-h-screen items-end justify-center overflow-hidden pb-24"
+      className="relative flex min-h-screen items-center justify-center overflow-hidden"
       aria-label="Hero"
     >
       {/* Background image */}
@@ -61,7 +61,7 @@ export default function Hero() {
 
       {/* Content */}
       <motion.div
-        className="relative z-10 flex flex-col items-start px-6 text-left"
+        className="relative z-10 flex flex-col items-center px-6 text-center"
         style={{ maxWidth: "var(--container)" }}
         variants={container}
         initial="hidden"
@@ -98,7 +98,7 @@ export default function Hero() {
 
         <motion.p
           variants={fadeUp}
-          className="section-subtitle mb-10"
+          className="section-subtitle mx-auto mb-10"
           style={{ maxWidth: 560, color: "rgba(255, 255, 255, 0.85)" }}
         >
           Comprehensive ophthalmology services in a modern, comfortable setting.
@@ -107,11 +107,11 @@ export default function Hero() {
 
         <motion.div
           variants={fadeUp}
-          className="flex flex-wrap items-center justify-start gap-4 mb-12 w-full"
+          className="relative flex items-center justify-center gap-4 mb-12 w-full"
         >
           <button
             onClick={openBookingModal}
-            className="btn-primary"
+            className="btn-primary absolute left-0"
             aria-label="Book an appointment"
           >
             <CalendarCheck size={18} />
