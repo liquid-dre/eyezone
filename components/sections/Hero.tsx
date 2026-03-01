@@ -99,29 +99,33 @@ export default function Hero() {
 
         <motion.div
           variants={fadeUp}
-          className="flex items-center justify-center gap-6 mb-12"
+          className="flex items-center mb-12 w-full"
         >
-          <RoundedSlideButton
-            onClick={openBookingModal}
-            icon={<CalendarCheck size={18} />}
-            defaultBg="var(--blue-600)"
-            defaultText="#ffffff"
-            hoverBg="#ffffff"
-            hoverText="var(--blue-700)"
-          >
-            Book an Appointment
-          </RoundedSlideButton>
-          <RoundedSlideButton
-            href="#services"
-            icon={<ChevronRight size={16} />}
-            defaultBg="transparent"
-            defaultText="#ffffff"
-            hoverBg="#ffffff"
-            hoverText="var(--blue-700)"
-            borderColor="rgba(255, 255, 255, 0.4)"
-          >
-            View Services
-          </RoundedSlideButton>
+          <div className="flex justify-end flex-1 pr-3">
+            <RoundedSlideButton
+              onClick={openBookingModal}
+              icon={<CalendarCheck size={18} />}
+              defaultBg="var(--blue-600)"
+              defaultText="#ffffff"
+              hoverBg="#ffffff"
+              hoverText="var(--blue-700)"
+            >
+              Book an Appointment
+            </RoundedSlideButton>
+          </div>
+          <div className="flex justify-start flex-1 pl-3">
+            <RoundedSlideButton
+              href="#services"
+              icon={<ChevronRight size={16} />}
+              defaultBg="transparent"
+              defaultText="#ffffff"
+              hoverBg="#ffffff"
+              hoverText="var(--blue-700)"
+              borderColor="rgba(255, 255, 255, 0.4)"
+            >
+              View Services
+            </RoundedSlideButton>
+          </div>
         </motion.div>
 
         {/* Trust strip */}
