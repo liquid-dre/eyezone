@@ -8,7 +8,6 @@ import LensArcs from "@/components/visuals/LensArcs";
 import TrueFocus from "@/components/ui/TrueFocus";
 import RoundedSlideButton from "@/components/ui/RoundedSlideButton";
 import { useMouseParallaxMotion } from "@/lib/hooks";
-import { openBookingModal } from "@/lib/hooks";
 
 const container = {
   hidden: {},
@@ -106,7 +105,7 @@ export default function Hero() {
         >
           <div className="w-full sm:w-auto lg:flex lg:flex-1 lg:justify-end lg:pr-12">
             <RoundedSlideButton
-              onClick={openBookingModal}
+              href="#contact"
               icon={<CalendarCheck size={18} />}
               defaultBg="var(--blue-600)"
               defaultText="#ffffff"
