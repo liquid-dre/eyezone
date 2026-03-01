@@ -162,13 +162,19 @@ body {
 
 .section {
   position: relative;
-  padding: var(--space-5xl) var(--space-xl);
+  padding: var(--space-3xl) var(--space-md);
   overflow: hidden;
 }
 
-@media (max-width: 768px) {
+@media (min-width: 640px) {
   .section {
-    padding: var(--space-4xl) var(--space-md);
+    padding: var(--space-4xl) var(--space-lg);
+  }
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding: var(--space-5xl) var(--space-xl);
   }
 }
 
@@ -188,11 +194,17 @@ body {
 
 .section-title {
   font-family: var(--font-display), system-ui, sans-serif;
-  font-size: var(--text-4xl);
+  font-size: var(--text-3xl);
   font-weight: 600;
   line-height: var(--leading-tight);
   color: var(--fg);
   letter-spacing: -0.025em;
+}
+
+@media (min-width: 640px) {
+  .section-title {
+    font-size: var(--text-4xl);
+  }
 }
 
 @media (min-width: 768px) {
@@ -206,10 +218,16 @@ body {
 }
 
 .section-subtitle {
-  font-size: var(--text-lg);
+  font-size: var(--text-base);
   line-height: var(--leading-relaxed);
   color: var(--neutral-500);
   max-width: 600px;
+}
+
+@media (min-width: 640px) {
+  .section-subtitle {
+    font-size: var(--text-lg);
+  }
 }
 
 @media (min-width: 768px) {
@@ -244,8 +262,14 @@ body {
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: var(--radius-xl);
-  padding: var(--space-2xl);
+  padding: var(--space-lg);
   transition: all var(--duration-slow) var(--ease-out);
+}
+
+@media (min-width: 640px) {
+  .card {
+    padding: var(--space-2xl);
+  }
 }
 
 .card-hover:hover {
@@ -438,9 +462,9 @@ body {
   align-items: center;
   justify-content: center;
   gap: var(--space-sm);
-  padding: 0.875rem 2rem;
+  padding: 0.75rem 1.5rem;
   font-family: var(--font-body), system-ui, sans-serif;
-  font-size: var(--text-base);
+  font-size: var(--text-sm);
   font-weight: 600;
   color: var(--btn-text);
   background: var(--btn-bg);
@@ -452,6 +476,13 @@ body {
   white-space: nowrap;
   text-decoration: none;
   line-height: 1;
+}
+
+@media (min-width: 640px) {
+  .btn-slide {
+    padding: 0.875rem 2rem;
+    font-size: var(--text-base);
+  }
 }
 
 .btn-slide::before {
@@ -491,8 +522,14 @@ body {
   left: 0;
   right: 0;
   z-index: 100;
-  padding: var(--space-lg) var(--space-xl);
+  padding: var(--space-md) var(--space-md);
   transition: all var(--duration-slow) var(--ease-out);
+}
+
+@media (min-width: 640px) {
+  .nav {
+    padding: var(--space-lg) var(--space-xl);
+  }
 }
 
 .nav-scrolled {
@@ -500,8 +537,14 @@ body {
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border-bottom: 1px solid var(--border-light);
-  padding: var(--space-md) var(--space-xl);
+  padding: var(--space-sm) var(--space-md);
   box-shadow: var(--shadow-sm);
+}
+
+@media (min-width: 640px) {
+  .nav-scrolled {
+    padding: var(--space-md) var(--space-xl);
+  }
 }
 
 .nav-link {
@@ -641,13 +684,20 @@ select.input {
 .modal {
   position: relative;
   background: var(--bg);
-  border-radius: var(--radius-2xl);
+  border-radius: var(--radius-xl);
   box-shadow: var(--shadow-xl);
   max-width: 520px;
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
-  padding: var(--space-2xl);
+  padding: var(--space-lg);
+}
+
+@media (min-width: 640px) {
+  .modal {
+    border-radius: var(--radius-2xl);
+    padding: var(--space-2xl);
+  }
 }
 
 .modal-title {
@@ -683,8 +733,9 @@ select.input {
 /* ── Toast ──────────────────────────────────────────── */
 .toast {
   position: fixed;
-  bottom: var(--space-xl);
-  right: var(--space-xl);
+  bottom: var(--space-md);
+  left: var(--space-md);
+  right: var(--space-md);
   z-index: 300;
   display: flex;
   align-items: center;
@@ -696,6 +747,14 @@ select.input {
   box-shadow: var(--shadow-xl);
   font-size: var(--text-sm);
   font-weight: 500;
+}
+
+@media (min-width: 640px) {
+  .toast {
+    left: auto;
+    bottom: var(--space-xl);
+    right: var(--space-xl);
+  }
 }
 
 .toast-success {
@@ -773,10 +832,23 @@ select.input {
 /* ── Hero-specific ──────────────────────────────────── */
 .hero-bg {
   position: absolute;
-  inset: 20px;
+  inset: 8px;
   z-index: 0;
   overflow: hidden;
-  border-radius: var(--radius-2xl);
+  border-radius: var(--radius-xl);
+}
+
+@media (min-width: 640px) {
+  .hero-bg {
+    inset: 12px;
+    border-radius: var(--radius-2xl);
+  }
+}
+
+@media (min-width: 768px) {
+  .hero-bg {
+    inset: 20px;
+  }
 }
 
 .hero-overlay {
@@ -797,7 +869,13 @@ select.input {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: var(--space-lg) var(--space-2xl);
+  gap: var(--space-md) var(--space-lg);
+}
+
+@media (min-width: 640px) {
+  .trust-strip {
+    gap: var(--space-lg) var(--space-2xl);
+  }
 }
 
 .trust-item {
@@ -875,8 +953,14 @@ select.input {
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: var(--radius-xl);
-  padding: var(--space-2xl);
+  padding: var(--space-lg);
   transition: all var(--duration-slow) var(--ease-out);
+}
+
+@media (min-width: 640px) {
+  .testimonial-card {
+    padding: var(--space-2xl);
+  }
 }
 
 .testimonial-card:hover {
@@ -885,10 +969,16 @@ select.input {
 }
 
 .testimonial-text {
-  font-size: var(--text-lg);
+  font-size: var(--text-base);
   line-height: var(--leading-relaxed);
   color: var(--neutral-700);
   font-style: italic;
+}
+
+@media (min-width: 640px) {
+  .testimonial-text {
+    font-size: var(--text-lg);
+  }
 }
 
 .testimonial-author {
@@ -920,10 +1010,23 @@ select.input {
 .profile-image-placeholder {
   position: relative;
   width: 100%;
-  aspect-ratio: 3/4;
-  border-radius: var(--radius-2xl);
+  aspect-ratio: 4/3;
+  border-radius: var(--radius-xl);
   overflow: hidden;
   background: linear-gradient(160deg, var(--blue-100) 0%, var(--blue-200) 50%, var(--blue-300) 100%);
+}
+
+@media (min-width: 640px) {
+  .profile-image-placeholder {
+    aspect-ratio: 1/1;
+    border-radius: var(--radius-2xl);
+  }
+}
+
+@media (min-width: 1024px) {
+  .profile-image-placeholder {
+    aspect-ratio: 3/4;
+  }
 }
 
 .profile-lens-mask {
@@ -1000,9 +1103,16 @@ select.input {
 .contact-form-card {
   background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: var(--radius-2xl);
-  padding: var(--space-2xl);
+  border-radius: var(--radius-xl);
+  padding: var(--space-lg);
   box-shadow: var(--shadow-lg);
+}
+
+@media (min-width: 640px) {
+  .contact-form-card {
+    border-radius: var(--radius-2xl);
+    padding: var(--space-2xl);
+  }
 }
 
 /* ── Footer ─────────────────────────────────────────── */

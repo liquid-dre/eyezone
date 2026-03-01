@@ -21,7 +21,7 @@ export default function Testimonials() {
     >
       <div className="section-container">
         <motion.div
-          className="mb-16 text-center"
+          className="mb-8 sm:mb-12 md:mb-16 text-center"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -40,7 +40,7 @@ export default function Testimonials() {
               key={page}
               className="grid gap-6"
               style={{
-                gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+                gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 320px), 1fr))",
               }}
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}

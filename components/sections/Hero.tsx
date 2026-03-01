@@ -52,7 +52,7 @@ export default function Hero() {
           style={{ x: mouse.x * 2, y: mouse.y * 2 }}
           className="absolute inset-0 flex items-center justify-center"
         >
-          <LensArcs className="w-[700px] h-[700px] opacity-60" />
+          <LensArcs className="w-[350px] h-[350px] sm:w-[500px] sm:h-[500px] md:w-[700px] md:h-[700px] opacity-60" />
         </motion.div>
       </div>
 
@@ -99,9 +99,9 @@ export default function Hero() {
 
         <motion.div
           variants={fadeUp}
-          className="flex items-center mb-12 w-full"
+          className="flex flex-col sm:flex-row items-center mb-12 w-full px-4 sm:px-0 gap-4 lg:gap-0 justify-center"
         >
-          <div className="flex justify-end flex-1 pr-12">
+          <div className="w-full sm:w-auto lg:flex lg:flex-1 lg:justify-end lg:pr-12">
             <RoundedSlideButton
               onClick={openBookingModal}
               icon={<CalendarCheck size={18} />}
@@ -109,11 +109,12 @@ export default function Hero() {
               defaultText="#ffffff"
               hoverBg="#ffffff"
               hoverText="var(--blue-700)"
+              className="w-full sm:w-auto"
             >
               Book an Appointment
             </RoundedSlideButton>
           </div>
-          <div className="flex justify-start flex-1 pl-12">
+          <div className="w-full sm:w-auto lg:flex lg:flex-1 lg:justify-start lg:pl-12">
             <RoundedSlideButton
               href="#services"
               icon={<ChevronRight size={16} />}
@@ -122,6 +123,7 @@ export default function Hero() {
               hoverBg="#ffffff"
               hoverText="var(--blue-700)"
               borderColor="rgba(255, 255, 255, 0.4)"
+              className="w-full sm:w-auto"
             >
               View Services
             </RoundedSlideButton>
@@ -142,7 +144,7 @@ export default function Hero() {
 
         {/* Scroll indicator */}
         <motion.div
-          className="scroll-indicator mt-16"
+          className="scroll-indicator mt-10 sm:mt-16 hidden sm:flex"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 2, duration: 1 }}

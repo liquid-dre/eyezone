@@ -205,7 +205,7 @@ export default function FlipDateTimePicker({
               {format(displayDate, "LLLL")}
             </span>
           </div>
-          <div className="relative z-0 h-28 w-44 shrink-0">
+          <div className="relative z-0 h-28 w-36 sm:w-44 shrink-0">
             <AnimatePresence mode="sync">
               {/* Top half */}
               <motion.div

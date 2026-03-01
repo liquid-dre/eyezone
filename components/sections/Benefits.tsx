@@ -30,7 +30,7 @@ export default function Benefits() {
     <section id="benefits" className="section" aria-label="Why choose The Eye Zone">
       <div className="section-container">
         <motion.div
-          className="mb-16 text-center"
+          className="mb-8 sm:mb-12 md:mb-16 text-center"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -112,7 +112,7 @@ function Card({
             initial={{ x: 0, y: 0 }}
             variants={{ hovered: { x: -8, y: -8 } }}
             className={twMerge(
-              "relative -m-0.5 flex h-72 flex-col justify-between overflow-hidden border-2 border-black bg-blue-300 p-8",
+              "relative -m-0.5 flex h-64 sm:h-72 flex-col justify-between overflow-hidden border-2 border-black bg-blue-300 p-6 sm:p-8",
               className
             )}
           >
@@ -121,12 +121,12 @@ function Card({
               <Icon size={28} strokeWidth={2.5} />
             </div>
 
-            <p className="mt-6 flex items-center text-2xl font-medium uppercase">
+            <p className="mt-6 flex items-center text-xl sm:text-2xl font-medium uppercase">
               {title}
             </p>
 
             <div>
-              <p className="transition-[margin] duration-300 ease-in-out group-hover:mb-10">
+              <p className="text-sm sm:text-base transition-[margin] duration-300 ease-in-out group-hover:mb-10">
                 {subtitle}
               </p>
               <button className="absolute bottom-2 left-2 right-2 translate-y-full border-2 border-black bg-white px-4 py-2 text-black opacity-0 transition-all duration-300 ease-in-out group-hover:translate-y-0 group-hover:opacity-100">

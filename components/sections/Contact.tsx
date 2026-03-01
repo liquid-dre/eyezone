@@ -79,7 +79,7 @@ export default function Contact() {
       <section id="contact" className="section" aria-label="Contact us">
         <div className="section-container">
           <motion.div
-            className="mb-16 text-center"
+            className="mb-8 sm:mb-12 md:mb-16 text-center"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -93,7 +93,7 @@ export default function Contact() {
             </p>
           </motion.div>
 
-          <div className="grid gap-12 lg:grid-cols-2">
+          <div className="grid gap-8 lg:gap-12 lg:grid-cols-2">
             {/* Contact form */}
             <motion.form
               className="contact-form-card"
