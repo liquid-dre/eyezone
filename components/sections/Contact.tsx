@@ -70,46 +70,6 @@ export default function Contact() {
     }
   };
 
-  const Field = ({
-    label,
-    name,
-    type = "text",
-    placeholder,
-    textarea,
-  }: {
-    label: string;
-    name: keyof FormData;
-    type?: string;
-    placeholder: string;
-    textarea?: boolean;
-  }) => (
-    <div>
-      <label className="input-label" htmlFor={`contact-${name}`}>
-        {label}
-      </label>
-      {textarea ? (
-        <textarea
-          id={`contact-${name}`}
-          className={`input ${errors[name] ? "input-error" : ""}`}
-          placeholder={placeholder}
-          value={form[name]}
-          onChange={(e) => setForm({ ...form, [name]: e.target.value })}
-          rows={4}
-        />
-      ) : (
-        <input
-          id={`contact-${name}`}
-          type={type}
-          className={`input ${errors[name] ? "input-error" : ""}`}
-          placeholder={placeholder}
-          value={form[name]}
-          onChange={(e) => setForm({ ...form, [name]: e.target.value })}
-        />
-      )}
-      {errors[name] && <p className="input-error-text">{errors[name]}</p>}
-    </div>
-  );
-
   return (
     <>
       <section id="contact" className="section" aria-label="Contact us">
@@ -141,17 +101,38 @@ export default function Contact() {
               noValidate
             >
               <div className="flex flex-col gap-5">
-                <Field
-                  label="Name"
-                  name="name"
-                  placeholder="Your full name"
-                />
-                <Field
-                  label="Email"
-                  name="email"
-                  type="email"
-                  placeholder="you@example.com"
-                />
+                {/* Name */}
+                <div>
+                  <label className="input-label" htmlFor="contact-name">
+                    Name <span style={{ color: "#ef4444" }}>*</span>
+                  </label>
+                  <input
+                    id="contact-name"
+                    type="text"
+                    className={`input ${errors.name ? "input-error" : ""}`}
+                    placeholder="Your full name"
+                    value={form.name}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  />
+                  {errors.name && <p className="input-error-text">{errors.name}</p>}
+                </div>
+
+                {/* Email */}
+                <div>
+                  <label className="input-label" htmlFor="contact-email">
+                    Email <span style={{ color: "#ef4444" }}>*</span>
+                  </label>
+                  <input
+                    id="contact-email"
+                    type="email"
+                    className={`input ${errors.email ? "input-error" : ""}`}
+                    placeholder="you@example.com"
+                    value={form.email}
+                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  />
+                  {errors.email && <p className="input-error-text">{errors.email}</p>}
+                </div>
+
                 <div>
                   <label className="input-label">Preferred Date &amp; Time</label>
                   <FlipDateTimePicker
@@ -167,12 +148,22 @@ export default function Contact() {
                     variant="light"
                   />
                 </div>
-                <Field
-                  label="Message"
-                  name="message"
-                  placeholder="Tell us how we can help…"
-                  textarea
-                />
+
+                {/* Message */}
+                <div>
+                  <label className="input-label" htmlFor="contact-message">
+                    Message <span style={{ color: "#ef4444" }}>*</span>
+                  </label>
+                  <textarea
+                    id="contact-message"
+                    className={`input ${errors.message ? "input-error" : ""}`}
+                    placeholder="Tell us how we can help…"
+                    value={form.message}
+                    onChange={(e) => setForm({ ...form, message: e.target.value })}
+                    rows={4}
+                  />
+                  {errors.message && <p className="input-error-text">{errors.message}</p>}
+                </div>
                 <RoundedSlideButton
                   icon={<Send size={16} />}
                   className="w-full mt-2"
