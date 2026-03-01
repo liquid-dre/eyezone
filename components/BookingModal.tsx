@@ -3,10 +3,10 @@
 import { useState, type FormEvent } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { CalendarCheck, X } from "lucide-react";
+import { toast } from "sonner";
 import { useBookingModalState, closeBookingModal } from "@/lib/hooks";
 import { services } from "@/lib/data";
 import RoundedSlideButton from "@/components/ui/RoundedSlideButton";
-import Toast from "@/components/ui/Toast";
 import FlipDateTimePicker from "@/components/ui/FlipDateTimePicker";
 
 interface BookingForm {
@@ -31,7 +31,6 @@ export default function BookingModal() {
   const isOpen = useBookingModalState();
   const [form, setForm] = useState<BookingForm>(initial);
   const [errors, setErrors] = useState<Partial<Record<keyof BookingForm, string>>>({});
-  const [showToast, setShowToast] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   const validate = () => {
@@ -57,13 +56,18 @@ export default function BookingModal() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-      if (!res.ok) throw new Error("send failed");
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.error ?? "Failed to send");
+      }
       setForm(initial);
       setErrors({});
       closeBookingModal();
-      setShowToast(true);
-    } catch {
-      setErrors({ name: "Something went wrong — please try again." });
+      toast.success("Appointment request sent! We'll confirm shortly.");
+    } catch (err) {
+      toast.error(
+        err instanceof Error ? err.message : "Something went wrong — please try again.",
+      );
     } finally {
       setSubmitting(false);
     }
@@ -254,12 +258,6 @@ export default function BookingModal() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      <Toast
-        message="Appointment request sent! We'll confirm shortly."
-        visible={showToast}
-        onClose={() => setShowToast(false)}
-      />
     </>
   );
 }

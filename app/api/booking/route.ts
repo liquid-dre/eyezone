@@ -4,9 +4,20 @@ import {
   bookingConfirmationHtml,
   type BookingEmailProps,
 } from "@/lib/emails/booking-confirmation";
+import { rateLimit } from "@/lib/rate-limit";
 
 export async function POST(req: Request) {
   try {
+    const ip =
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+
+    if (!rateLimit(ip)) {
+      return NextResponse.json(
+        { error: "Please wait a minute before sending another request." },
+        { status: 429 },
+      );
+    }
+
     const body = (await req.json()) as BookingEmailProps;
 
     const { name, phone, service, date, time } = body;

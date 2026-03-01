@@ -12,8 +12,8 @@ import {
   Instagram,
   Twitter,
 } from "lucide-react";
+import { toast } from "sonner";
 import RoundedSlideButton from "@/components/ui/RoundedSlideButton";
-import Toast from "@/components/ui/Toast";
 import FlipDateTimePicker from "@/components/ui/FlipDateTimePicker";
 
 interface FormData {
@@ -35,7 +35,6 @@ const initialForm: FormData = {
 export default function Contact() {
   const [form, setForm] = useState<FormData>(initialForm);
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
-  const [showToast, setShowToast] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   const validate = () => {
@@ -59,12 +58,17 @@ export default function Contact() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-      if (!res.ok) throw new Error("send failed");
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.error ?? "Failed to send");
+      }
       setForm(initialForm);
       setErrors({});
-      setShowToast(true);
-    } catch {
-      setErrors({ name: "Something went wrong — please try again." });
+      toast.success("Message sent! We'll be in touch soon.");
+    } catch (err) {
+      toast.error(
+        err instanceof Error ? err.message : "Something went wrong — please try again.",
+      );
     } finally {
       setSubmitting(false);
     }
@@ -310,12 +314,6 @@ export default function Contact() {
           </div>
         </div>
       </section>
-
-      <Toast
-        message="Message sent! We'll be in touch soon."
-        visible={showToast}
-        onClose={() => setShowToast(false)}
-      />
     </>
   );
 }
