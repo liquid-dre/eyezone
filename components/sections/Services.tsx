@@ -1,3 +1,6 @@
+"use client";
+
+import { useState, useRef, useEffect, useCallback } from "react";
 import { services } from "@/lib/data";
 import type { Service } from "@/lib/data";
 import { ArrowUpRight, Eye } from "lucide-react";
@@ -14,8 +17,30 @@ const serviceImages = [
 ];
 
 export default function Services() {
+  const [activeCard, setActiveCard] = useState<number | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Dismiss active card when tapping outside the section
+  useEffect(() => {
+    const handleTouchStart = (e: TouchEvent) => {
+      if (
+        sectionRef.current &&
+        !sectionRef.current.contains(e.target as Node)
+      ) {
+        setActiveCard(null);
+      }
+    };
+    document.addEventListener("touchstart", handleTouchStart);
+    return () => document.removeEventListener("touchstart", handleTouchStart);
+  }, []);
+
+  const handleActivate = useCallback((index: number) => {
+    setActiveCard(index);
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id="services"
       aria-label="Services"
       className="px-3 py-4 sm:p-4 md:p-12"
@@ -27,6 +52,8 @@ export default function Services() {
             key={service.title}
             service={service}
             src={serviceImages[i]}
+            isActive={activeCard === i}
+            onActivate={() => handleActivate(i)}
           />
         ))}
       </div>
@@ -36,6 +63,8 @@ export default function Services() {
             key={service.title}
             service={service}
             src={serviceImages[i + 2]}
+            isActive={activeCard === i + 2}
+            onActivate={() => handleActivate(i + 2)}
           />
         ))}
       </div>
@@ -45,6 +74,8 @@ export default function Services() {
             key={service.title}
             service={service}
             src={serviceImages[i + 5]}
+            isActive={activeCard === i + 5}
+            onActivate={() => handleActivate(i + 5)}
           />
         ))}
       </div>
@@ -55,59 +86,104 @@ export default function Services() {
 const ServiceCard = ({
   service,
   src,
+  isActive,
+  onActivate,
 }: {
   service: Service;
   src: string;
+  isActive: boolean;
+  onActivate: () => void;
 }) => {
   const Icon = service.icon;
+  const a = isActive;
+
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    // On touch-only devices, first tap reveals the hover state;
+    // second tap (when already active) navigates normally.
+    if (window.matchMedia("(hover: none)").matches && !isActive) {
+      e.preventDefault();
+      onActivate();
+    }
+  };
+
   return (
     <a
       href="#contact"
+      onClick={handleClick}
       className="group relative flex h-56 flex-col justify-end overflow-hidden p-6 md:h-80 md:p-9"
     >
-      <div className="absolute left-3 top-5 z-10 text-neutral-400 transition-colors duration-500 group-hover:text-blue-400">
+      <div
+        className={`absolute left-3 top-5 z-10 transition-colors duration-500 ${a ? "text-blue-400" : "text-neutral-400"} group-hover:text-blue-400`}
+      >
         <Icon size={18} />
       </div>
 
-      <div className="relative z-10 transition-transform duration-500 group-hover:-translate-y-3">
-        <h3 className="text-xl font-medium leading-tight text-neutral-800 transition-colors duration-500 group-hover:font-bold group-hover:text-white md:text-2xl">
+      <div
+        className={`relative z-10 transition-transform duration-500 ${a ? "-translate-y-3" : ""} group-hover:-translate-y-3`}
+      >
+        <h3
+          className={`text-xl font-medium leading-tight transition-colors duration-500 md:text-2xl ${a ? "font-bold text-white" : "text-neutral-800"} group-hover:font-bold group-hover:text-white`}
+        >
           {service.title}
         </h3>
-        <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-neutral-500 transition-colors duration-500 group-hover:text-blue-200">
+        <p
+          className={`mt-2 line-clamp-2 text-sm leading-relaxed transition-colors duration-500 ${a ? "text-blue-200" : "text-neutral-500"} group-hover:text-blue-200`}
+        >
           {service.description}
         </p>
       </div>
 
       <Eye
         size={24}
-        className="absolute right-3 top-4 z-10 text-neutral-300 transition-colors duration-500 group-hover:text-blue-400"
+        className={`absolute right-3 top-4 z-10 transition-colors duration-500 ${a ? "text-blue-400" : "text-neutral-300"} group-hover:text-blue-400`}
       />
 
       <div
-        className="absolute inset-0 bg-cover bg-center opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+        className={`absolute inset-0 bg-cover bg-center transition-opacity duration-500 ${a ? "opacity-100" : "opacity-0"} group-hover:opacity-100`}
         style={{
           backgroundImage: `url(${src})`,
         }}
       />
-      <div className="absolute inset-0 bg-neutral-900/70 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+      <div
+        className={`absolute inset-0 bg-neutral-900/70 transition-opacity duration-500 ${a ? "opacity-100" : "opacity-0"} group-hover:opacity-100`}
+      />
 
-      <Corners />
+      <Corners isActive={a} />
     </a>
   );
 };
 
-const Corners = () => (
-  <>
-    <span className="absolute left-[1px] top-[1px] z-10 h-3 w-[1px] origin-top scale-0 bg-blue-600 transition-all duration-500 group-hover:scale-100" />
-    <span className="absolute left-[1px] top-[1px] z-10 h-[1px] w-3 origin-left scale-0 bg-blue-600 transition-all duration-500 group-hover:scale-100" />
-    <span className="absolute bottom-[1px] right-[1px] z-10 h-3 w-[1px] origin-bottom scale-0 bg-blue-600 transition-all duration-500 group-hover:scale-100" />
-    <span className="absolute bottom-[1px] right-[1px] z-10 h-[1px] w-3 origin-right scale-0 bg-blue-600 transition-all duration-500 group-hover:scale-100" />
-    <span className="absolute bottom-[1px] left-[1px] z-10 h-3 w-[1px] origin-bottom scale-0 bg-blue-600 transition-all duration-500 group-hover:scale-100" />
-    <span className="absolute bottom-[1px] left-[1px] z-10 h-[1px] w-3 origin-left scale-0 bg-blue-600 transition-all duration-500 group-hover:scale-100" />
-    <span className="absolute right-[1px] top-[1px] z-10 h-3 w-[1px] origin-top scale-0 bg-blue-600 transition-all duration-500 group-hover:scale-100" />
-    <span className="absolute right-[1px] top-[1px] z-10 h-[1px] w-3 origin-right scale-0 bg-blue-600 transition-all duration-500 group-hover:scale-100" />
-  </>
-);
+const Corners = ({ isActive }: { isActive?: boolean }) => {
+  const a = isActive;
+  return (
+    <>
+      <span
+        className={`absolute left-[1px] top-[1px] z-10 h-3 w-[1px] origin-top bg-blue-600 transition-all duration-500 ${a ? "scale-100" : "scale-0"} group-hover:scale-100`}
+      />
+      <span
+        className={`absolute left-[1px] top-[1px] z-10 h-[1px] w-3 origin-left bg-blue-600 transition-all duration-500 ${a ? "scale-100" : "scale-0"} group-hover:scale-100`}
+      />
+      <span
+        className={`absolute bottom-[1px] right-[1px] z-10 h-3 w-[1px] origin-bottom bg-blue-600 transition-all duration-500 ${a ? "scale-100" : "scale-0"} group-hover:scale-100`}
+      />
+      <span
+        className={`absolute bottom-[1px] right-[1px] z-10 h-[1px] w-3 origin-right bg-blue-600 transition-all duration-500 ${a ? "scale-100" : "scale-0"} group-hover:scale-100`}
+      />
+      <span
+        className={`absolute bottom-[1px] left-[1px] z-10 h-3 w-[1px] origin-bottom bg-blue-600 transition-all duration-500 ${a ? "scale-100" : "scale-0"} group-hover:scale-100`}
+      />
+      <span
+        className={`absolute bottom-[1px] left-[1px] z-10 h-[1px] w-3 origin-left bg-blue-600 transition-all duration-500 ${a ? "scale-100" : "scale-0"} group-hover:scale-100`}
+      />
+      <span
+        className={`absolute right-[1px] top-[1px] z-10 h-3 w-[1px] origin-top bg-blue-600 transition-all duration-500 ${a ? "scale-100" : "scale-0"} group-hover:scale-100`}
+      />
+      <span
+        className={`absolute right-[1px] top-[1px] z-10 h-[1px] w-3 origin-right bg-blue-600 transition-all duration-500 ${a ? "scale-100" : "scale-0"} group-hover:scale-100`}
+      />
+    </>
+  );
+};
 
 const TitleCard = () => {
   return (

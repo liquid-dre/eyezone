@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { motion, useInView, MotionConfig } from "framer-motion";
 import { twMerge } from "tailwind-merge";
 import { benefits } from "@/lib/data";
@@ -25,9 +25,34 @@ const blueShades = [
 export default function Benefits() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+  const [activeCard, setActiveCard] = useState<number | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Dismiss active card when tapping outside the section
+  useEffect(() => {
+    const handleTouchStart = (e: TouchEvent) => {
+      if (
+        sectionRef.current &&
+        !sectionRef.current.contains(e.target as Node)
+      ) {
+        setActiveCard(null);
+      }
+    };
+    document.addEventListener("touchstart", handleTouchStart);
+    return () => document.removeEventListener("touchstart", handleTouchStart);
+  }, []);
+
+  const handleToggle = useCallback((index: number) => {
+    setActiveCard((prev) => (prev === index ? null : index));
+  }, []);
 
   return (
-    <section id="benefits" className="section" aria-label="Why choose The Eye Zone">
+    <section
+      ref={sectionRef}
+      id="benefits"
+      className="section"
+      aria-label="Why choose The Eye Zone"
+    >
       <div className="section-container">
         <motion.div
           className="mb-8 sm:mb-12 md:mb-16 text-center"
@@ -66,6 +91,8 @@ export default function Benefits() {
                 subtitle={benefit.description}
                 icon={benefit.icon}
                 className={blueShades[i % blueShades.length]}
+                isActive={activeCard === i}
+                onToggle={() => handleToggle(i)}
               />
             </motion.div>
           ))}
@@ -75,17 +102,35 @@ export default function Benefits() {
   );
 }
 
+const cardLayerVariants = {
+  initial: { x: 0, y: 0 },
+  hovered: { x: -8, y: -8 },
+};
+
 function Card({
   title,
   subtitle,
   icon: Icon,
   className,
+  isActive,
+  onToggle,
 }: {
   title: string;
   subtitle: string;
   icon: LucideIcon;
   className?: string;
+  isActive: boolean;
+  onToggle: () => void;
 }) {
+  const a = isActive;
+
+  const handleClick = () => {
+    // Only toggle on touch-only devices
+    if (window.matchMedia("(hover: none)").matches) {
+      onToggle();
+    }
+  };
+
   return (
     <MotionConfig
       transition={{
@@ -95,29 +140,32 @@ function Card({
     >
       <motion.div
         whileHover="hovered"
+        animate={a ? "hovered" : "initial"}
+        initial="initial"
+        onClick={handleClick}
         className={twMerge(
-          "group w-full border-2 border-black bg-blue-300",
+          "group w-full cursor-pointer border-2 border-black bg-blue-300",
           className
         )}
       >
         <motion.div
-          initial={{ x: 0, y: 0 }}
-          variants={{ hovered: { x: -8, y: -8 } }}
+          variants={cardLayerVariants}
           className={twMerge(
             "-m-0.5 border-2 border-black bg-blue-300",
             className
           )}
         >
           <motion.div
-            initial={{ x: 0, y: 0 }}
-            variants={{ hovered: { x: -8, y: -8 } }}
+            variants={cardLayerVariants}
             className={twMerge(
               "relative -m-0.5 flex h-64 sm:h-72 flex-col justify-between overflow-hidden border-2 border-black bg-blue-300 p-6 sm:p-8",
               className
             )}
           >
-            {/* Icon – top-left corner, visible on hover */}
-            <div className="absolute left-4 top-4 opacity-0 transition-all duration-300 ease-in-out group-hover:opacity-100">
+            {/* Icon – top-left corner, visible on hover/active */}
+            <div
+              className={`absolute left-4 top-4 transition-all duration-300 ease-in-out ${a ? "opacity-100" : "opacity-0"} group-hover:opacity-100`}
+            >
               <Icon size={28} strokeWidth={2.5} />
             </div>
 
@@ -126,10 +174,14 @@ function Card({
             </p>
 
             <div>
-              <p className="text-sm sm:text-base transition-[margin] duration-300 ease-in-out group-hover:mb-10">
+              <p
+                className={`text-sm sm:text-base transition-[margin] duration-300 ease-in-out ${a ? "mb-10" : ""} group-hover:mb-10`}
+              >
                 {subtitle}
               </p>
-              <button className="absolute bottom-2 left-2 right-2 translate-y-full border-2 border-black bg-white px-4 py-2 text-black opacity-0 transition-all duration-300 ease-in-out group-hover:translate-y-0 group-hover:opacity-100">
+              <button
+                className={`absolute bottom-2 left-2 right-2 border-2 border-black bg-white px-4 py-2 text-black transition-all duration-300 ease-in-out ${a ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"} group-hover:translate-y-0 group-hover:opacity-100`}
+              >
                 LEARN MORE
               </button>
             </div>
@@ -163,9 +215,10 @@ function Card({
                 <textPath
                   href={`#circlePath-${title.replace(/\s/g, "")}`}
                   fill="black"
-                  className="fill-black text-2xl font-black uppercase opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100"
+                  className={`fill-black text-2xl font-black uppercase transition-opacity duration-300 ease-in-out ${a ? "opacity-100" : "opacity-0"} group-hover:opacity-100`}
                 >
-                  LEARN MORE &bull; LEARN MORE &bull; LEARN MORE &bull; LEARN MORE &bull;
+                  LEARN MORE &bull; LEARN MORE &bull; LEARN MORE &bull; LEARN
+                  MORE &bull;
                 </textPath>
               </text>
             </motion.svg>
