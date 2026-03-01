@@ -114,24 +114,33 @@ const TitleCard = () => {
   return (
     <a
       href="#contact"
-      className="group relative flex h-56 flex-col justify-between bg-blue-50 p-6 md:h-80 md:p-9"
+      className="group relative flex h-56 flex-col justify-between overflow-hidden p-6 md:h-80 md:p-9"
     >
-      <h2 className="text-4xl uppercase leading-tight text-neutral-800">
-        <span className="text-blue-600 transition-colors duration-500 group-hover:text-blue-700">
+      <h2 className="relative z-10 text-4xl font-bold uppercase leading-tight text-white">
+        <span className="text-blue-200 transition-colors duration-500 group-hover:text-blue-300">
           What We
         </span>
         <br />
         Offer
       </h2>
-      <div className="flex items-center gap-1.5 text-xs uppercase text-neutral-500 transition-colors duration-500 group-hover:text-blue-600">
+      <div className="relative z-10 flex items-center gap-1.5 text-xs uppercase text-blue-200 transition-colors duration-500 group-hover:text-white">
         <Eye size={16} />
         <span>Expert Eye Care in Harare</span>
       </div>
 
       <ArrowUpRight
         size={24}
-        className="absolute right-3 top-4 text-neutral-300 transition-colors duration-500 group-hover:text-blue-600"
+        className="absolute right-3 top-4 z-10 text-blue-200 transition-colors duration-500 group-hover:text-white"
       />
+
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{
+          backgroundImage:
+            "url(https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=2380&auto=format&fit=crop)",
+        }}
+      />
+      <div className="absolute inset-0 bg-neutral-900/70" />
     </a>
   );
 };
