@@ -7,6 +7,7 @@ import { useBookingModalState, closeBookingModal } from "@/lib/hooks";
 import { services } from "@/lib/data";
 import RoundedSlideButton from "@/components/ui/RoundedSlideButton";
 import Toast from "@/components/ui/Toast";
+import FlipDateTimePicker from "@/components/ui/FlipDateTimePicker";
 
 interface BookingForm {
   name: string;
@@ -40,6 +41,7 @@ export default function BookingModal() {
       e.phone = "Enter a valid phone number";
     if (!form.service) e.service = "Please select a service";
     if (!form.date) e.date = "Please choose a date";
+    else if (!form.time) e.date = "Please select a time slot";
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -188,20 +190,17 @@ export default function BookingModal() {
                       )}
                     </div>
 
-                    <div className="grid grid-cols-2 gap-3">
-                      <Field
-                        label="Preferred Date"
-                        name="date"
-                        type="date"
-                        placeholder=""
-                      />
-                      <Field
-                        label="Preferred Time"
-                        name="time"
-                        type="time"
-                        placeholder=""
-                      />
-                    </div>
+                    <FlipDateTimePicker
+                      dateValue={form.date}
+                      timeValue={form.time}
+                      onDateChange={(d) =>
+                        setForm((prev) => ({ ...prev, date: d }))
+                      }
+                      onTimeChange={(t) =>
+                        setForm((prev) => ({ ...prev, time: t }))
+                      }
+                      error={errors.date}
+                    />
 
                     <div>
                       <label className="input-label" htmlFor="booking-notes">
