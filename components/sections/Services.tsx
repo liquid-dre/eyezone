@@ -65,7 +65,7 @@ const ServiceCard = ({
       href="#contact"
       className="group relative flex h-56 flex-col justify-end overflow-hidden p-6 md:h-80 md:p-9"
     >
-      <div className="absolute left-3 top-5 z-10 text-neutral-400 transition-colors duration-500 group-hover:text-white">
+      <div className="absolute left-3 top-5 z-10 text-neutral-400 transition-colors duration-500 group-hover:text-blue-400">
         <Icon size={18} />
       </div>
 
@@ -80,7 +80,7 @@ const ServiceCard = ({
 
       <Eye
         size={24}
-        className="absolute right-3 top-4 z-10 text-neutral-300 transition-colors duration-500 group-hover:text-white"
+        className="absolute right-3 top-4 z-10 text-neutral-300 transition-colors duration-500 group-hover:text-blue-400"
       />
 
       <div
