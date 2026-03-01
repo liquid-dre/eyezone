@@ -99,31 +99,35 @@ export default function Hero() {
 
         <motion.div
           variants={fadeUp}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 w-full px-4 sm:px-0"
+          className="flex flex-col sm:flex-row items-center mb-12 w-full px-4 sm:px-0 gap-4 lg:gap-0 justify-center"
         >
-          <RoundedSlideButton
-            onClick={openBookingModal}
-            icon={<CalendarCheck size={18} />}
-            defaultBg="var(--blue-600)"
-            defaultText="#ffffff"
-            hoverBg="#ffffff"
-            hoverText="var(--blue-700)"
-            className="w-full sm:w-auto"
-          >
-            Book an Appointment
-          </RoundedSlideButton>
-          <RoundedSlideButton
-            href="#services"
-            icon={<ChevronRight size={16} />}
-            defaultBg="transparent"
-            defaultText="#ffffff"
-            hoverBg="#ffffff"
-            hoverText="var(--blue-700)"
-            borderColor="rgba(255, 255, 255, 0.4)"
-            className="w-full sm:w-auto"
-          >
-            View Services
-          </RoundedSlideButton>
+          <div className="w-full sm:w-auto lg:flex lg:flex-1 lg:justify-end lg:pr-12">
+            <RoundedSlideButton
+              onClick={openBookingModal}
+              icon={<CalendarCheck size={18} />}
+              defaultBg="var(--blue-600)"
+              defaultText="#ffffff"
+              hoverBg="#ffffff"
+              hoverText="var(--blue-700)"
+              className="w-full sm:w-auto"
+            >
+              Book an Appointment
+            </RoundedSlideButton>
+          </div>
+          <div className="w-full sm:w-auto lg:flex lg:flex-1 lg:justify-start lg:pl-12">
+            <RoundedSlideButton
+              href="#services"
+              icon={<ChevronRight size={16} />}
+              defaultBg="transparent"
+              defaultText="#ffffff"
+              hoverBg="#ffffff"
+              hoverText="var(--blue-700)"
+              borderColor="rgba(255, 255, 255, 0.4)"
+              className="w-full sm:w-auto"
+            >
+              View Services
+            </RoundedSlideButton>
+          </div>
         </motion.div>
 
         {/* Trust strip */}
