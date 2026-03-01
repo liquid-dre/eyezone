@@ -18,9 +18,9 @@ export default function Services() {
     <section
       id="services"
       aria-label="Services"
-      className="bg-neutral-900 p-4 text-neutral-50 md:p-12"
+      className="p-4 md:p-12"
     >
-      <div className="mx-auto grid max-w-5xl grid-cols-1 divide-y divide-neutral-700 border border-neutral-700 md:grid-cols-3 md:divide-x md:divide-y-0">
+      <div className="mx-auto grid max-w-5xl grid-cols-1 divide-y divide-neutral-200 border border-neutral-200 md:grid-cols-3 md:divide-x md:divide-y-0">
         <TitleCard />
         {services.slice(0, 2).map((service, i) => (
           <ServiceCard
@@ -30,7 +30,7 @@ export default function Services() {
           />
         ))}
       </div>
-      <div className="mx-auto grid max-w-5xl grid-cols-1 divide-y divide-neutral-700 border-x border-b border-neutral-700 md:grid-cols-3 md:divide-x md:divide-y-0">
+      <div className="mx-auto grid max-w-5xl grid-cols-1 divide-y divide-neutral-200 border-x border-b border-neutral-200 md:grid-cols-3 md:divide-x md:divide-y-0">
         {services.slice(2, 5).map((service, i) => (
           <ServiceCard
             key={service.title}
@@ -39,7 +39,7 @@ export default function Services() {
           />
         ))}
       </div>
-      <div className="mx-auto grid max-w-5xl grid-cols-1 divide-y divide-neutral-700 border-x border-b border-neutral-700 md:grid-cols-3 md:divide-x md:divide-y-0">
+      <div className="mx-auto grid max-w-5xl grid-cols-1 divide-y divide-neutral-200 border-x border-b border-neutral-200 md:grid-cols-3 md:divide-x md:divide-y-0">
         {services.slice(5, 8).map((service, i) => (
           <ServiceCard
             key={service.title}
@@ -63,24 +63,24 @@ const ServiceCard = ({
   return (
     <a
       href="#contact"
-      className="group relative flex h-56 flex-col justify-end overflow-hidden p-6 transition-colors hover:bg-neutral-950 md:h-80 md:p-9"
+      className="group relative flex h-56 flex-col justify-end overflow-hidden p-6 transition-colors hover:bg-neutral-50 md:h-80 md:p-9"
     >
-      <div className="absolute left-3 top-5 z-10 text-neutral-400 transition-colors duration-500 group-hover:text-neutral-50">
+      <div className="absolute left-3 top-5 z-10 text-neutral-400 transition-colors duration-500 group-hover:text-blue-600">
         <Icon size={18} />
       </div>
 
       <div className="relative z-10 transition-transform duration-500 group-hover:-translate-y-3">
-        <h3 className="text-xl font-medium leading-tight md:text-2xl">
+        <h3 className="text-xl font-medium leading-tight text-neutral-800 md:text-2xl">
           {service.title}
         </h3>
-        <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-neutral-500 transition-colors duration-500 group-hover:text-neutral-300">
+        <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-neutral-500 transition-colors duration-500 group-hover:text-neutral-700">
           {service.description}
         </p>
       </div>
 
       <Eye
         size={24}
-        className="absolute right-3 top-4 z-10 text-neutral-400 transition-colors group-hover:text-neutral-50"
+        className="absolute right-3 top-4 z-10 text-neutral-300 transition-colors group-hover:text-blue-600"
       />
 
       <div
@@ -99,14 +99,14 @@ const ServiceCard = ({
 
 const Corners = () => (
   <>
-    <span className="absolute left-[1px] top-[1px] z-10 h-3 w-[1px] origin-top scale-0 bg-blue-400 transition-all duration-500 group-hover:scale-100" />
-    <span className="absolute left-[1px] top-[1px] z-10 h-[1px] w-3 origin-left scale-0 bg-blue-400 transition-all duration-500 group-hover:scale-100" />
-    <span className="absolute bottom-[1px] right-[1px] z-10 h-3 w-[1px] origin-bottom scale-0 bg-blue-400 transition-all duration-500 group-hover:scale-100" />
-    <span className="absolute bottom-[1px] right-[1px] z-10 h-[1px] w-3 origin-right scale-0 bg-blue-400 transition-all duration-500 group-hover:scale-100" />
-    <span className="absolute bottom-[1px] left-[1px] z-10 h-3 w-[1px] origin-bottom scale-0 bg-blue-400 transition-all duration-500 group-hover:scale-100" />
-    <span className="absolute bottom-[1px] left-[1px] z-10 h-[1px] w-3 origin-left scale-0 bg-blue-400 transition-all duration-500 group-hover:scale-100" />
-    <span className="absolute right-[1px] top-[1px] z-10 h-3 w-[1px] origin-top scale-0 bg-blue-400 transition-all duration-500 group-hover:scale-100" />
-    <span className="absolute right-[1px] top-[1px] z-10 h-[1px] w-3 origin-right scale-0 bg-blue-400 transition-all duration-500 group-hover:scale-100" />
+    <span className="absolute left-[1px] top-[1px] z-10 h-3 w-[1px] origin-top scale-0 bg-blue-600 transition-all duration-500 group-hover:scale-100" />
+    <span className="absolute left-[1px] top-[1px] z-10 h-[1px] w-3 origin-left scale-0 bg-blue-600 transition-all duration-500 group-hover:scale-100" />
+    <span className="absolute bottom-[1px] right-[1px] z-10 h-3 w-[1px] origin-bottom scale-0 bg-blue-600 transition-all duration-500 group-hover:scale-100" />
+    <span className="absolute bottom-[1px] right-[1px] z-10 h-[1px] w-3 origin-right scale-0 bg-blue-600 transition-all duration-500 group-hover:scale-100" />
+    <span className="absolute bottom-[1px] left-[1px] z-10 h-3 w-[1px] origin-bottom scale-0 bg-blue-600 transition-all duration-500 group-hover:scale-100" />
+    <span className="absolute bottom-[1px] left-[1px] z-10 h-[1px] w-3 origin-left scale-0 bg-blue-600 transition-all duration-500 group-hover:scale-100" />
+    <span className="absolute right-[1px] top-[1px] z-10 h-3 w-[1px] origin-top scale-0 bg-blue-600 transition-all duration-500 group-hover:scale-100" />
+    <span className="absolute right-[1px] top-[1px] z-10 h-[1px] w-3 origin-right scale-0 bg-blue-600 transition-all duration-500 group-hover:scale-100" />
   </>
 );
 
@@ -114,23 +114,23 @@ const TitleCard = () => {
   return (
     <a
       href="#contact"
-      className="group relative flex h-56 flex-col justify-between bg-neutral-950 p-6 md:h-80 md:p-9"
+      className="group relative flex h-56 flex-col justify-between bg-blue-50 p-6 md:h-80 md:p-9"
     >
-      <h2 className="text-4xl uppercase leading-tight">
-        <span className="text-neutral-400 transition-colors duration-500 group-hover:text-blue-400">
+      <h2 className="text-4xl uppercase leading-tight text-neutral-800">
+        <span className="text-blue-600 transition-colors duration-500 group-hover:text-blue-700">
           What We
         </span>
         <br />
         Offer
       </h2>
-      <div className="flex items-center gap-1.5 text-xs uppercase text-neutral-400 transition-colors duration-500 group-hover:text-neutral-50">
+      <div className="flex items-center gap-1.5 text-xs uppercase text-neutral-500 transition-colors duration-500 group-hover:text-blue-600">
         <Eye size={16} />
         <span>Expert Eye Care in Harare</span>
       </div>
 
       <ArrowUpRight
         size={24}
-        className="absolute right-3 top-4 text-neutral-400 transition-colors duration-500 group-hover:text-blue-400"
+        className="absolute right-3 top-4 text-neutral-300 transition-colors duration-500 group-hover:text-blue-600"
       />
     </a>
   );
