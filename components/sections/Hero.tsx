@@ -5,6 +5,7 @@ import Image from "next/image";
 import { ArrowDown, CalendarCheck, ChevronRight, Sparkles, Activity, Clock } from "lucide-react";
 import FloatingOrbs from "@/components/visuals/FloatingOrbs";
 import LensArcs from "@/components/visuals/LensArcs";
+import TrueFocus from "@/components/ui/TrueFocus";
 import { useMouseParallax } from "@/lib/hooks";
 import { openBookingModal } from "@/lib/hooks";
 
@@ -73,7 +74,7 @@ export default function Hero() {
           </span>
         </motion.div>
 
-        <motion.h1
+        <motion.div
           variants={fadeUp}
           className="font-display mb-6"
           style={{
@@ -84,15 +85,16 @@ export default function Hero() {
             color: "#ffffff",
           }}
         >
-          Your Vision Deserves{" "}
-          <span
-            style={{
-              color: "var(--blue-300)",
-            }}
-          >
-            Expert Care
-          </span>
-        </motion.h1>
+          <h1 className="mb-2">Your Vision Deserves</h1>
+          <TrueFocus
+            sentence="Expert Care"
+            blurAmount={3}
+            borderColor="var(--blue-300)"
+            glowColor="rgba(147, 197, 253, 0.6)"
+            animationDuration={0.5}
+            pauseBetweenAnimations={1.5}
+          />
+        </motion.div>
 
         <motion.p
           variants={fadeUp}
