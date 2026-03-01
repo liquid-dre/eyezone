@@ -12,6 +12,7 @@ import {
   Instagram,
   Twitter,
 } from "lucide-react";
+import RoundedSlideButton from "@/components/ui/RoundedSlideButton";
 import Toast from "@/components/ui/Toast";
 
 interface FormData {
@@ -146,10 +147,12 @@ export default function Contact() {
                   placeholder="Tell us how we can help…"
                   textarea
                 />
-                <button type="submit" className="btn-primary w-full mt-2">
-                  <Send size={16} />
+                <RoundedSlideButton
+                  icon={<Send size={16} />}
+                  className="w-full mt-2"
+                >
                   Send Message
-                </button>
+                </RoundedSlideButton>
               </div>
             </motion.form>
 

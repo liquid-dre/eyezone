@@ -1,10 +1,17 @@
 "use client";
 
-import { useState, useEffect, type FormEvent } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { X, CalendarCheck } from "lucide-react";
+import { useState, type FormEvent } from "react";
+import { CalendarCheck } from "lucide-react";
 import { useBookingModalState, closeBookingModal } from "@/lib/hooks";
 import { services } from "@/lib/data";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/Dialog";
+import RoundedSlideButton from "@/components/ui/RoundedSlideButton";
 import Toast from "@/components/ui/Toast";
 
 interface BookingForm {
@@ -30,27 +37,6 @@ export default function BookingModal() {
   const [form, setForm] = useState<BookingForm>(initial);
   const [errors, setErrors] = useState<Partial<Record<keyof BookingForm, string>>>({});
   const [showToast, setShowToast] = useState(false);
-
-  // Lock body scroll
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isOpen]);
-
-  // Escape key
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") closeBookingModal();
-    };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, []);
 
   const validate = () => {
     const e: typeof errors = {};
@@ -102,130 +88,103 @@ export default function BookingModal() {
 
   return (
     <>
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            className="modal-overlay"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            onClick={(e) => {
-              if (e.target === e.currentTarget) closeBookingModal();
-            }}
-            role="dialog"
-            aria-modal="true"
-            aria-label="Book an appointment"
-          >
-            <motion.div
-              className="modal"
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] as const }}
-            >
-              <button
-                className="modal-close"
-                onClick={closeBookingModal}
-                aria-label="Close dialog"
+      <Dialog
+        open={isOpen}
+        onOpenChange={(open) => {
+          if (!open) closeBookingModal();
+        }}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Book an Appointment</DialogTitle>
+            <DialogDescription>
+              Fill in the details below and we&apos;ll confirm your booking.
+            </DialogDescription>
+          </DialogHeader>
+
+          <form onSubmit={handleSubmit} noValidate>
+            <div className="flex flex-col gap-4">
+              <Field
+                label="Full Name"
+                name="name"
+                placeholder="Your full name"
+              />
+              <Field
+                label="Phone Number"
+                name="phone"
+                type="tel"
+                placeholder="+263 77 000 0000"
+              />
+
+              {/* Service select */}
+              <div>
+                <label
+                  className="input-label"
+                  htmlFor="booking-service"
+                >
+                  Service
+                </label>
+                <select
+                  id="booking-service"
+                  className={`input ${errors.service ? "input-error" : ""}`}
+                  value={form.service}
+                  onChange={(e) =>
+                    setForm({ ...form, service: e.target.value })
+                  }
+                >
+                  <option value="">Select a service…</option>
+                  {services.map((s) => (
+                    <option key={s.title} value={s.title}>
+                      {s.title}
+                    </option>
+                  ))}
+                </select>
+                {errors.service && (
+                  <p className="input-error-text">{errors.service}</p>
+                )}
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <Field
+                  label="Preferred Date"
+                  name="date"
+                  type="date"
+                  placeholder=""
+                />
+                <Field
+                  label="Preferred Time"
+                  name="time"
+                  type="time"
+                  placeholder=""
+                />
+              </div>
+
+              <div>
+                <label className="input-label" htmlFor="booking-notes">
+                  Notes (optional)
+                </label>
+                <textarea
+                  id="booking-notes"
+                  className="input"
+                  placeholder="Anything we should know…"
+                  value={form.notes}
+                  onChange={(e) =>
+                    setForm({ ...form, notes: e.target.value })
+                  }
+                  rows={3}
+                />
+              </div>
+
+              <RoundedSlideButton
+                icon={<CalendarCheck size={16} />}
+                className="w-full mt-2"
               >
-                <X size={18} />
-              </button>
-
-              <h2 className="modal-title">Book an Appointment</h2>
-              <p
-                style={{
-                  fontSize: "var(--text-sm)",
-                  color: "var(--neutral-500)",
-                  marginBottom: "var(--space-xl)",
-                }}
-              >
-                Fill in the details below and we&apos;ll confirm your booking.
-              </p>
-
-              <form onSubmit={handleSubmit} noValidate>
-                <div className="flex flex-col gap-4">
-                  <Field
-                    label="Full Name"
-                    name="name"
-                    placeholder="Your full name"
-                  />
-                  <Field
-                    label="Phone Number"
-                    name="phone"
-                    type="tel"
-                    placeholder="+263 77 000 0000"
-                  />
-
-                  {/* Service select */}
-                  <div>
-                    <label
-                      className="input-label"
-                      htmlFor="booking-service"
-                    >
-                      Service
-                    </label>
-                    <select
-                      id="booking-service"
-                      className={`input ${errors.service ? "input-error" : ""}`}
-                      value={form.service}
-                      onChange={(e) =>
-                        setForm({ ...form, service: e.target.value })
-                      }
-                    >
-                      <option value="">Select a service…</option>
-                      {services.map((s) => (
-                        <option key={s.title} value={s.title}>
-                          {s.title}
-                        </option>
-                      ))}
-                    </select>
-                    {errors.service && (
-                      <p className="input-error-text">{errors.service}</p>
-                    )}
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <Field
-                      label="Preferred Date"
-                      name="date"
-                      type="date"
-                      placeholder=""
-                    />
-                    <Field
-                      label="Preferred Time"
-                      name="time"
-                      type="time"
-                      placeholder=""
-                    />
-                  </div>
-
-                  <div>
-                    <label className="input-label" htmlFor="booking-notes">
-                      Notes (optional)
-                    </label>
-                    <textarea
-                      id="booking-notes"
-                      className="input"
-                      placeholder="Anything we should know…"
-                      value={form.notes}
-                      onChange={(e) =>
-                        setForm({ ...form, notes: e.target.value })
-                      }
-                      rows={3}
-                    />
-                  </div>
-
-                  <button type="submit" className="btn-primary w-full mt-2">
-                    <CalendarCheck size={16} />
-                    Confirm Booking
-                  </button>
-                </div>
-              </form>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                Confirm Booking
+              </RoundedSlideButton>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
 
       <Toast
         message="Appointment request sent! We'll confirm shortly."
