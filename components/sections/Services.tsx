@@ -63,34 +63,33 @@ const ServiceCard = ({
   return (
     <a
       href="#contact"
-      className="group relative flex h-56 flex-col justify-end overflow-hidden p-6 transition-colors hover:bg-neutral-50 md:h-80 md:p-9"
+      className="group relative flex h-56 flex-col justify-end overflow-hidden p-6 md:h-80 md:p-9"
     >
-      <div className="absolute left-3 top-5 z-10 text-neutral-400 transition-colors duration-500 group-hover:text-blue-600">
+      <div className="absolute left-3 top-5 z-10 text-neutral-400 transition-colors duration-500 group-hover:text-white">
         <Icon size={18} />
       </div>
 
       <div className="relative z-10 transition-transform duration-500 group-hover:-translate-y-3">
-        <h3 className="text-xl font-medium leading-tight text-neutral-800 md:text-2xl">
+        <h3 className="text-xl font-medium leading-tight text-neutral-800 transition-colors duration-500 group-hover:font-bold group-hover:text-white md:text-2xl">
           {service.title}
         </h3>
-        <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-neutral-500 transition-colors duration-500 group-hover:text-neutral-700">
+        <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-neutral-500 transition-colors duration-500 group-hover:text-blue-200">
           {service.description}
         </p>
       </div>
 
       <Eye
         size={24}
-        className="absolute right-3 top-4 z-10 text-neutral-300 transition-colors group-hover:text-blue-600"
+        className="absolute right-3 top-4 z-10 text-neutral-300 transition-colors duration-500 group-hover:text-white"
       />
 
       <div
-        className="absolute bottom-0 left-0 right-0 top-0 opacity-0 blur-sm grayscale transition-all group-hover:opacity-10 group-active:scale-105 group-active:opacity-30 group-active:blur-0 group-active:grayscale-0"
+        className="absolute inset-0 bg-cover bg-center opacity-0 transition-opacity duration-500 group-hover:opacity-100"
         style={{
           backgroundImage: `url(${src})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
         }}
       />
+      <div className="absolute inset-0 bg-neutral-900/70 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
       <Corners />
     </a>
