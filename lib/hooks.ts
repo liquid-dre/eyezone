@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
+import { useMotionValue } from "framer-motion";
 
 /* ── useScrollPosition ─────────────────────────────── */
 export function useScrollPosition() {
@@ -40,6 +41,7 @@ export function useActiveSection(sectionIds: string[], offset = 120) {
 }
 
 /* ── useMouseParallax ──────────────────────────────── */
+/** @deprecated Use useMouseParallaxMotion for zero-rerender parallax */
 export function useMouseParallax(sensitivity = 0.02) {
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
@@ -55,6 +57,44 @@ export function useMouseParallax(sensitivity = 0.02) {
   }, [sensitivity]);
 
   return position;
+}
+
+/* ── useMouseParallaxMotion (zero re-renders) ──────── */
+export function useMouseParallaxMotion(sensitivity = 0.02) {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  useEffect(() => {
+    // Skip on touch-only devices — parallax is mouse-only
+    if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) {
+      return;
+    }
+
+    let rafId: number | null = null;
+    let latestX = 0;
+    let latestY = 0;
+
+    const handleMouse = (e: MouseEvent) => {
+      latestX = (e.clientX - window.innerWidth / 2) * sensitivity;
+      latestY = (e.clientY - window.innerHeight / 2) * sensitivity;
+
+      if (rafId === null) {
+        rafId = requestAnimationFrame(() => {
+          x.set(latestX);
+          y.set(latestY);
+          rafId = null;
+        });
+      }
+    };
+
+    window.addEventListener("mousemove", handleMouse, { passive: true });
+    return () => {
+      window.removeEventListener("mousemove", handleMouse);
+      if (rafId !== null) cancelAnimationFrame(rafId);
+    };
+  }, [sensitivity, x, y]);
+
+  return { x, y };
 }
 
 /* ── useMediaQuery ─────────────────────────────────── */

@@ -1,13 +1,13 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useTransform } from "framer-motion";
 import Image from "next/image";
 import { CalendarCheck, ChevronRight, Sparkles, Activity, Clock } from "lucide-react";
 import FloatingOrbs from "@/components/visuals/FloatingOrbs";
 import LensArcs from "@/components/visuals/LensArcs";
 import TrueFocus from "@/components/ui/TrueFocus";
 import RoundedSlideButton from "@/components/ui/RoundedSlideButton";
-import { useMouseParallax } from "@/lib/hooks";
+import { useMouseParallaxMotion } from "@/lib/hooks";
 import { openBookingModal } from "@/lib/hooks";
 
 const container = {
@@ -29,7 +29,10 @@ const trustItems = [
 ];
 
 export default function Hero() {
-  const mouse = useMouseParallax(0.015);
+  const mouse = useMouseParallaxMotion(0.015);
+  // Derive 2x multiplier without re-renders
+  const parallaxX = useTransform(mouse.x, (v) => v * 2);
+  const parallaxY = useTransform(mouse.y, (v) => v * 2);
 
   return (
     <section
@@ -49,8 +52,8 @@ export default function Hero() {
         <div className="hero-overlay" />
         <FloatingOrbs />
         <motion.div
-          style={{ x: mouse.x * 2, y: mouse.y * 2 }}
-          className="absolute inset-0 flex items-center justify-center"
+          style={{ x: parallaxX, y: parallaxY }}
+          className="hero-parallax-layer absolute inset-0 flex items-center justify-center"
         >
           <LensArcs className="w-[350px] h-[350px] sm:w-[500px] sm:h-[500px] md:w-[700px] md:h-[700px] opacity-60" />
         </motion.div>
@@ -64,7 +67,7 @@ export default function Hero() {
         initial="hidden"
         animate="show"
       >
-        
+
 
         <motion.div
           variants={fadeUp}

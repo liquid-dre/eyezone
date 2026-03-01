@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 
 interface TrueFocusProps {
@@ -65,18 +65,18 @@ const TrueFocus: React.FC<TrueFocusProps> = ({
     });
   }, [currentIndex, words.length]);
 
-  const handleMouseEnter = (index: number) => {
+  const handleMouseEnter = useCallback((index: number) => {
     if (manualMode) {
       setLastActiveIndex(index);
       setCurrentIndex(index);
     }
-  };
+  }, [manualMode]);
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = useCallback(() => {
     if (manualMode) {
       setCurrentIndex(lastActiveIndex!);
     }
-  };
+  }, [manualMode, lastActiveIndex]);
 
   return (
     <div
@@ -93,16 +93,14 @@ const TrueFocus: React.FC<TrueFocusProps> = ({
               wordRefs.current[index] = el;
             }}
             className="relative cursor-pointer"
-            style={
-              {
-                filter: isActive
-                  ? `blur(0px)`
-                  : `blur(${blurAmount}px)`,
-                transition: `filter ${animationDuration}s ease`,
-                outline: 'none',
-                userSelect: 'none'
-              } as React.CSSProperties
-            }
+            style={{
+              filter: isActive ? `blur(0px)` : `blur(${blurAmount}px)`,
+              transition: `filter ${animationDuration}s ease`,
+              willChange: 'filter',
+              outline: 'none',
+              userSelect: 'none',
+              contain: 'layout style',
+            }}
             onMouseEnter={() => handleMouseEnter(index)}
             onMouseLeave={handleMouseLeave}
           >
@@ -123,41 +121,39 @@ const TrueFocus: React.FC<TrueFocusProps> = ({
         transition={{
           duration: animationDuration
         }}
-        style={
-          {
-            '--border-color': borderColor,
-            '--glow-color': glowColor
-          } as React.CSSProperties
-        }
+        style={{
+          '--border-color': borderColor,
+          '--glow-color': glowColor
+        } as React.CSSProperties}
       >
         <span
           className="absolute w-4 h-4 border-[3px] rounded-[3px] top-[-10px] left-[-10px] border-r-0 border-b-0"
           style={{
             borderColor: 'var(--border-color)',
-            filter: 'drop-shadow(0 0 4px var(--border-color))'
+            boxShadow: '0 0 4px var(--glow-color)',
           }}
-        ></span>
+        />
         <span
           className="absolute w-4 h-4 border-[3px] rounded-[3px] top-[-10px] right-[-10px] border-l-0 border-b-0"
           style={{
             borderColor: 'var(--border-color)',
-            filter: 'drop-shadow(0 0 4px var(--border-color))'
+            boxShadow: '0 0 4px var(--glow-color)',
           }}
-        ></span>
+        />
         <span
           className="absolute w-4 h-4 border-[3px] rounded-[3px] bottom-[-10px] left-[-10px] border-r-0 border-t-0"
           style={{
             borderColor: 'var(--border-color)',
-            filter: 'drop-shadow(0 0 4px var(--border-color))'
+            boxShadow: '0 0 4px var(--glow-color)',
           }}
-        ></span>
+        />
         <span
           className="absolute w-4 h-4 border-[3px] rounded-[3px] bottom-[-10px] right-[-10px] border-l-0 border-t-0"
           style={{
             borderColor: 'var(--border-color)',
-            filter: 'drop-shadow(0 0 4px var(--border-color))'
+            boxShadow: '0 0 4px var(--glow-color)',
           }}
-        ></span>
+        />
       </motion.div>
     </div>
   );
